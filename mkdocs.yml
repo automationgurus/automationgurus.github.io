@@ -1,0 +1,7 @@
+site_name: The Automation Bible
+pages:
+  - Home: 'README.md'
+
+theme:
+  name: 'material'
+
