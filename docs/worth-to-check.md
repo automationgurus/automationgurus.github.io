@@ -15,13 +15,7 @@ For full documentation visit [mkdocs.org](https://www.mkdocs.org).
 }
 ```
 
-# Who are we?
-
-## Artur Brodziński
-
-### Kamil Więcek
-
-
+## Who we are?
 
     mkdocs.yml    # The configuration file.
     docs/
