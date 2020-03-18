@@ -193,18 +193,6 @@
       
       
 
-
-  <li class="md-nav__item">
-    <a href=".." title="About" class="md-nav__link">
-      About
-    </a>
-  </li>
-
-    
-      
-      
-      
-
   
 
 
@@ -232,6 +220,20 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-situation-it-might-happen-to-you" class="md-nav__link">
+    Real-world situation. It might happen to you.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-log-analytics-workspace-clairvoyant" class="md-nav__link">
+    Is Log Analytics Workspace clairvoyant?
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#why-should-you-read-this-article-what-are-the-benefits" class="md-nav__link">
@@ -314,18 +316,6 @@
   </li>
 
     
-      
-      
-      
-
-
-  <li class="md-nav__item">
-    <a href="../worth-to-check/" title="Worth to check" class="md-nav__link">
-      Worth to check
-    </a>
-  </li>
-
-    
   </ul>
 </nav>
                   </div>
@@ -345,6 +335,20 @@
   
     <label class="md-nav__title" for="__toc">Table of contents</label>
     <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#real-world-situation-it-might-happen-to-you" class="md-nav__link">
+    Real-world situation. It might happen to you.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-log-analytics-workspace-clairvoyant" class="md-nav__link">
+    Is Log Analytics Workspace clairvoyant?
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#why-should-you-read-this-article-what-are-the-benefits" class="md-nav__link">
@@ -434,7 +438,45 @@
                 
                 
                 <h1 id="forward-azure-devops-audit-logs-to-log-analytics-workspace">Forward Azure DevOps Audit Logs to Log Analytics Workspace</h1>
-<p>We developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.</p>
+<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-000.jpg" /></p>
+<h2 id="real-world-situation-it-might-happen-to-you">Real-world situation. It might happen to you.</h2>
+<ol>
+<li>
+<p>You've just discovered new extension installed.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-007.jpg" /></p>
+</li>
+<li>
+<p>You wonder who and when did install this AzSK Extension, so you ask Log Analytics.</p>
+</li>
+</ol>
+<pre><code>AzureDevOps_CL 
+| sort by TimeGenerated desc nulls last 
+| where actionId_s == &quot;Extension.Installed&quot; 
+| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
+</code></pre>
+
+<table>
+<thead>
+<tr>
+<th>TimeGenerated</th>
+<th>actionId_s</th>
+<th>scopeDisplayName_s</th>
+<th>details_s</th>
+<th>actorDisplayName_s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2020-03-15T16:47:19.367Z</td>
+<td>Extension.Installed</td>
+<td>AutomationGuyIO (Organization)</td>
+<td>Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"</td>
+<td>Automation Guru</td>
+</tr>
+</tbody>
+</table>
+<h2 id="is-log-analytics-workspace-clairvoyant">Is Log Analytics Workspace clairvoyant?</h2>
+<p>No it isn't! We developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.</p>
 <p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-004.jpg" /></p>
 <h2 id="why-should-you-read-this-article-what-are-the-benefits">Why should you read this article? What are the benefits?</h2>
 <ol>
@@ -551,7 +593,7 @@ We believe that you can deploy and configure them without additional instruction
 <p>We use <em>Build-Signature</em> and <em>Post-LogAnalyticsData</em> from 
 <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api">MS DOCS: Data collector api</a>
 . In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced that.</p>
-<pre><code class="powershell">Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
+<pre><code>Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
 {
     $xHeaders = &quot;x-ms-date:&quot; + $date
     $stringToHash = $method + &quot;`n&quot; + $contentLength + &quot;`n&quot; + $contentType + &quot;`n&quot; + $xHeaders + &quot;`n&quot; + $resource
@@ -599,8 +641,8 @@ Function Post-LogAnalyticsData($ustomerId, $sharedKey, $body, $logType)
 $LogType = &quot;AzureDevOps&quot;
 
 $Conn = Get-AutomationConnection -Name AzureRunAsConnection
-Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
-$AzureContext = Select-AzSubscription -SubscriptionId $Conn.SubscriptionID
+Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint | Out-Null
+Select-AzSubscription -SubscriptionId $Conn.SubscriptionID | Out-Null
 
 $KeyVaultName =  Get-AutomationVariable -Name KeyVaultName
 Write-Output -InputObject 'Get keyvault name from automation account variables - success'
@@ -652,7 +694,7 @@ do {
 
 } while ($ApiOutput.hasMore)
 
-$DecoratedAuditLogEntries = $ApiOutputs.decoratedAuditLogEntries 
+[array]$DecoratedAuditLogEntries = $ApiOutputs.decoratedAuditLogEntries 
 
 if(-not $DecoratedAuditLogEntries) {
     Write-Output -InputObject 'There are no new audit logs.'
@@ -675,7 +717,7 @@ $StatusCode = Post-LogAnalyticsData -customerId $CustomerId -sharedKey $SharedKe
 
 if($StatusCode -eq 200){
     Set-AutomationVariable -Name LastAzureDevOpsSyncDate -Value $endTimeQuery
-    Write-Output -InputObject 'Azure DevOps audi logs successfully forwared'
+    Write-Output -InputObject 'Azure DevOps audi logs forwarding completed successfully'
 }
 </code></pre>
 
@@ -712,33 +754,21 @@ $endpointUri += &quot;&amp;endTime=$( $endTime )&quot;
 ### -->
 
 <h2 id="its-time-to-rest-and-check-what-we-did">It's time to rest and check what we did</h2>
-<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-001.jpg" /></p>
-<pre><code>AzureDevOps_CL 
-| sort by TimeGenerated desc nulls last 
-| where actionId_s == &quot;Extension.Installed&quot; 
-| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
-</code></pre>
-
-<table>
-<thead>
-<tr>
-<th>TimeGenerated</th>
-<th>actionId_s</th>
-<th>scopeDisplayName_s</th>
-<th>details_s</th>
-<th>actorDisplayName_s</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2020-03-15T16:47:19.367Z</td>
-<td>Extension.Installed</td>
-<td>AutomationGuyIO (Organization)</td>
-<td>Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"</td>
-<td>Kamil Więcek</td>
-</tr>
-</tbody>
-</table>
+<ol>
+<li>
+<p>Modify the branch policy and start to be suspicious.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-008.jpg" />
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-001.jpg" /></p>
+</li>
+<li>
+<p>Invoke synchronization manually or wait.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-009.jpg" /></p>
+</li>
+<li>
+<p>Check the results.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-010.jpg" /></p>
+</li>
+</ol>
 <h2 id="solution-development-insights">Solution development insights</h2>
 <ul>
 <li>ARA becomes a Contributor by default. Consider changing that.</li>
@@ -763,41 +793,6 @@ $endpointUri += &quot;&amp;endTime=$( $endTime )&quot;
       
         
 <footer class="md-footer">
-  
-    <div class="md-footer-nav">
-      <nav class="md-footer-nav__inner md-grid">
-        
-          <a href=".." title="About" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
-            </div>
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Previous
-                </span>
-                About
-              </span>
-            </div>
-          </a>
-        
-        
-          <a href="../worth-to-check/" title="Worth to check" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
-            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
-              <span class="md-flex__ellipsis">
-                <span class="md-footer-nav__direction">
-                  Next
-                </span>
-                Worth to check
-              </span>
-            </div>
-            <div class="md-flex__cell md-flex__cell--shrink">
-              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
-            </div>
-          </a>
-        
-      </nav>
-    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
