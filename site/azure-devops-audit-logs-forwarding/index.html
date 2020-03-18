@@ -193,6 +193,18 @@
       
       
 
+
+  <li class="md-nav__item">
+    <a href=".." title="About" class="md-nav__link">
+      About
+    </a>
+  </li>
+
+    
+      
+      
+      
+
   
 
 
@@ -275,19 +287,6 @@
     Powershell Runbook
   </a>
   
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
 </li>
       
         <li class="md-nav__item">
@@ -312,6 +311,18 @@
   
 </nav>
     
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../worth-to-check/" title="Worth to check" class="md-nav__link">
+      Worth to check
+    </a>
   </li>
 
     
@@ -388,19 +399,6 @@
   <a href="#powershell-runbook" class="md-nav__link">
     Powershell Runbook
   </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
-    
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -502,7 +500,7 @@ We believe that you can deploy and configure them without additional instruction
 <li><em>AzureDevOpsPersonalAccessToken</em> secret in AKV containing PAT value.</li>
 <li>Azure Log Analytics Workspace.</li>
 <li><em>Shared key read</em> permissions for ARA.</li>
-<li>Azure Automation Powershell Runbook.</li>
+<li>Azure Automation Powershell <strong>SynchronizeAzureDevOpsAuditLogs</strong> Runbook (<a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">get it here</a>)</li>
 </ul>
 <h2 id="solution-overview-more-details">Solution overview. More details.</h2>
 <ol>
@@ -549,18 +547,156 @@ We believe that you can deploy and configure them without additional instruction
 </tbody>
 </table>
 <h2 id="powershell-runbook">Powershell Runbook</h2>
-<p>We use Build-Signature and Post-LogAnalyticsData from 
+<p><a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">Get SynchronizeAzureDevOpsAuditLogsRunbook Source Code</a></p>
+<p>We use <em>Build-Signature</em> and <em>Post-LogAnalyticsData</em> from 
 <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api">MS DOCS: Data collector api</a>
-. In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced this behavior.</p>
-<p>You can find the script we use here: TBD</p>
-<p>Some more description about actions inside the script</p>
-<p>Get variables from Azure Automation:</p>
+. In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced that.</p>
+<pre><code class="powershell">Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
+{
+    $xHeaders = &quot;x-ms-date:&quot; + $date
+    $stringToHash = $method + &quot;`n&quot; + $contentLength + &quot;`n&quot; + $contentType + &quot;`n&quot; + $xHeaders + &quot;`n&quot; + $resource
+
+    $bytesToHash = [Text.Encoding]::UTF8.GetBytes($stringToHash)
+    $keyBytes = [Convert]::FromBase64String($sharedKey)
+
+    $sha256 = New-Object System.Security.Cryptography.HMACSHA256
+    $sha256.Key = $keyBytes
+    $calculatedHash = $sha256.ComputeHash($bytesToHash)
+    $encodedHash = [Convert]::ToBase64String($calculatedHash)
+    $authorization = 'SharedKey {0}:{1}' -f $customerId,$encodedHash
+    return $authorization
+}
+
+Function Post-LogAnalyticsData($ustomerId, $sharedKey, $body, $logType)
+{
+    $method = &quot;POST&quot;
+    $contentType = &quot;application/json&quot;
+    $resource = &quot;/api/logs&quot;
+    $rfc1123date = [DateTime]::UtcNow.ToString(&quot;r&quot;)
+    $contentLength = $body.Length
+    $signature = Build-Signature `
+        -customerId $customerId `
+        -sharedKey $sharedKey `
+        -date $rfc1123date `
+        -contentLength $contentLength `
+        -method $method `
+        -contentType $contentType `
+        -resource $resource
+    $uri = &quot;https://&quot; + $customerId + &quot;.ods.opinsights.azure.com&quot; + $resource + &quot;?api-version=2016-04-01&quot;
+
+    $headers = @{
+        &quot;Authorization&quot; = $signature;
+        &quot;Log-Type&quot; = $logType;
+        &quot;x-ms-date&quot; = $rfc1123date;
+        &quot;time-generated-field&quot; = &quot;timestamp&quot;;
+    }
+
+    $response = Invoke-WebRequest -Uri $uri -Method $method -ContentType $contentType -Headers $headers -Body $body -UseBasicParsing
+    return $response.StatusCode
+
+}
+
+$LogType = &quot;AzureDevOps&quot;
+
+$Conn = Get-AutomationConnection -Name AzureRunAsConnection
+Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
+$AzureContext = Select-AzSubscription -SubscriptionId $Conn.SubscriptionID
+
+$KeyVaultName =  Get-AutomationVariable -Name KeyVaultName
+Write-Output -InputObject 'Get keyvault name from automation account variables - success'
+
+$OrganizationName = Get-AutomationVariable -Name OrganizationName
+Write-Output -InputObject 'Get Azure DevOps organization name from automation account variables - success'
+
+$CustomerId = Get-AutomationVariable -Name WorkspaceId
+Write-Output -InputObject 'Get Log Analytics Workspace Id from automation account variables - success'
+
+$LogAnalyticsWorkspace = Get-AzOperationalInsightsWorkspace | Where-Object -Property CustomerId -EQ $CustomerId
+$SharedKey = (Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspace.ResourceGroupName -Name $logAnalyticsWorkspace.Name).PrimarySharedKey
+Write-Output -InputObject &quot;Get shared key directly from '$( $logAnalyticsWorkspace.Name )  - success&quot;
+
+$PersonAccessToken = (Get-AzKeyVaultSecret -VaultName $KeyVaultName  -Name 'AzureDevOpsPersonalAccessToken').SecretValueText 
+Write-Output -InputObject &quot;Get Personal Access Token from key vault '$( $KeyVaultName  )' - success&quot;
+
+$StartTime = Get-AutomationVariable -Name LastAzureDevOpsSyncDate
+$StartTime = $StartTime.ToUniversalTime().GetDateTimeFormats(&quot;o&quot;)
+
+[string]$EndTimeQuery = [DateTime]::Now.ToUniversalTime().GetDateTimeFormats(&quot;o&quot;)
+
+Write-Output -InputObject &quot;Script will look for audi events created between $( $StartTime ) and $( $endTimeQuery )&quot;
+
+$Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes((&quot;{0}:{1}&quot; -f 'basic',$PersonAccessToken)))
+
+$Headers = @{
+    Authorization = &quot;Basic $Base64AuthInfo&quot;
+}
+
+[array]$ApiOutputs = @()
+[string]$ContinuationToken = ''
+
+do {
+    $EndpointUri = &quot;https://auditservice.dev.azure.com/$( $OrganizationName )/_apis/audit/auditlog?api-version=5.1-preview.1&quot;
+    $EndpointUri += &quot;&amp;batchSize=200&quot;
+    $EndpointUri += &quot;&amp;skipAggregation=true&quot;
+    $EndpointUri += &quot;&amp;startTime=$( $StartTime )&quot;
+    $EndpointUri += &quot;&amp;endTime=$( $endTimeQuery )&quot;
+
+    if ($ContinuationToken) {
+        $EndpointUri += &quot;&amp;continuationToken=$( $continuationToken )&quot;
+    }
+
+    $ApiOutput = Invoke-RestMethod -Uri $endpointUri -Headers $headers  -Method Get 
+    $ContinuationToken = $ApiOutput.continuationToken #tu
+
+    $ApiOutputs += $ApiOutput
+
+} while ($ApiOutput.hasMore)
+
+$DecoratedAuditLogEntries = $ApiOutputs.decoratedAuditLogEntries 
+
+if(-not $DecoratedAuditLogEntries) {
+    Write-Output -InputObject 'There are no new audit logs.'
+    return;
+}
+
+Write-Output -InputObject &quot;Found $( $DecoratedAuditLogEntries.Count ) new audit entries&quot;
+
+
+foreach ($item in $DecoratedAuditLogEntries ) {
+    $item.data = $item.data | ConvertTo-Json -Compress -Depth 100
+}
+
+$RecordsJson = $DecoratedAuditLogEntries | `
+    Select-Object -ExcludeProperty actorImageUrl | `
+    ConvertTo-Json 
+
+
+$StatusCode = Post-LogAnalyticsData -customerId $CustomerId -sharedKey $SharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($recordsJson)) -logType $LogType
+
+if($StatusCode -eq 200){
+    Set-AutomationVariable -Name LastAzureDevOpsSyncDate -Value $endTimeQuery
+    Write-Output -InputObject 'Azure DevOps audi logs successfully forwared'
+}
+</code></pre>
+
+<!-- You can find the script we use here
+
+Some more description about actions inside the script
+
+Get variables from Azure Automation:
+
+
 <pre><code class="powershell">$OrganizationName = Get-AutomationVariable -Name OrganizationName
 </code></pre>
 
-<p>Get LAW SharedKey (it's required to invoke API calls)</p>
+
+Get LAW SharedKey (it's required to invoke API calls)
+
+
 <pre><code class="powershell">$SharedKey = Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspace.ResourceGroupName -Name $logAnalyticsWorkspace.Name
 </code></pre>
+
+
 
 <pre><code class="powershell">$endpointUri = &quot;https://auditservice.dev.azure.com/$( $OrganizationName )/&quot; + 
         &quot;_apis/audit/auditlog?api-version=5.1-preview.1&quot; # + &quot;&amp;skipAggregation=$( $skipAggregation )&quot;
@@ -571,7 +707,10 @@ $endpointUri += &quot;&amp;endTime=$( $endTime )&quot;
 
 </code></pre>
 
-<h3 id="_1"></h3>
+
+
+### -->
+
 <h2 id="its-time-to-rest-and-check-what-we-did">It's time to rest and check what we did</h2>
 <p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-001.jpg" /></p>
 <pre><code>AzureDevOps_CL 
@@ -624,6 +763,41 @@ $endpointUri += &quot;&amp;endTime=$( $endTime )&quot;
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href=".." title="About" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                About
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../worth-to-check/" title="Worth to check" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Worth to check
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">

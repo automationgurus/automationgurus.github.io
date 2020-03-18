@@ -14,7 +14,7 @@ Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $metho
     return $authorization
 }
 
-Function Post-LogAnalyticsData($customerId, $sharedKey, $body, $logType)
+Function Post-LogAnalyticsData($ustomerId, $sharedKey, $body, $logType)
 {
     $method = "POST"
     $contentType = "application/json"
@@ -46,8 +46,8 @@ Function Post-LogAnalyticsData($customerId, $sharedKey, $body, $logType)
 $LogType = "AzureDevOps"
 
 $Conn = Get-AutomationConnection -Name AzureRunAsConnection
-Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
-$AzureContext = Select-AzSubscription -SubscriptionId $Conn.SubscriptionID
+Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint | Out-Null
+Select-AzSubscription -SubscriptionId $Conn.SubscriptionID | Out-Null
 
 $KeyVaultName =  Get-AutomationVariable -Name KeyVaultName
 Write-Output -InputObject 'Get keyvault name from automation account variables - success'
@@ -72,58 +72,55 @@ $StartTime = $StartTime.ToUniversalTime().GetDateTimeFormats("o")
 
 Write-Output -InputObject "Script will look for audi events created between $( $StartTime ) and $( $endTimeQuery )"
 
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f 'basic',$PersonAccessToken)))
+$Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f 'basic',$PersonAccessToken)))
 
-$headers = @{
-    Authorization = "Basic $base64AuthInfo"
+$Headers = @{
+    Authorization = "Basic $Base64AuthInfo"
 }
 
-[array]$apiOutputs = @()
-[string]$continuationToken = ''
+[array]$ApiOutputs = @()
+[string]$ContinuationToken = ''
 
 do {
-    $endpointUri = "https://auditservice.dev.azure.com/$( $OrganizationName )/_apis/audit/auditlog?api-version=5.1-preview.1"
-    $endpointUri += "&batchSize=200"
-    $endpointUri += "&skipAggregation=true"
-    $endpointUri += "&startTime=$( $StartTime )"
-    $endpointUri += "&endTime=$( $endTimeQuery )"
+    $EndpointUri = "https://auditservice.dev.azure.com/$( $OrganizationName )/_apis/audit/auditlog?api-version=5.1-preview.1"
+    $EndpointUri += "&batchSize=200"
+    $EndpointUri += "&skipAggregation=true"
+    $EndpointUri += "&startTime=$( $StartTime )"
+    $EndpointUri += "&endTime=$( $endTimeQuery )"
 
-    if ($continuationToken) {
-        $endpointUri += "&continuationToken=$( $continuationToken )"
+    if ($ContinuationToken) {
+        $EndpointUri += "&continuationToken=$( $continuationToken )"
     }
 
-    $apiOutput = Invoke-RestMethod -Uri $endpointUri -Headers $headers  -Method Get 
-    $continuationToken = $apiOutput.continuationToken #tu
+    $ApiOutput = Invoke-RestMethod -Uri $endpointUri -Headers $headers  -Method Get 
+    $ContinuationToken = $ApiOutput.continuationToken #tu
 
-    $apiOutputs += $apiOutput
+    $ApiOutputs += $ApiOutput
 
-} while ($apiOutput.hasMore)
+} while ($ApiOutput.hasMore)
 
-$decoratedAuditLogEntries = $apiOutputs.decoratedAuditLogEntries 
+[array]$DecoratedAuditLogEntries = $ApiOutputs.decoratedAuditLogEntries 
 
-if(-not $decoratedAuditLogEntries) {
+if(-not $DecoratedAuditLogEntries) {
     Write-Output -InputObject 'There are no new audit logs.'
     return;
 }
 
-Write-Output -InputObject "Found $( $decoratedAuditLogEntries.Count ) new audit entries"
+Write-Output -InputObject "Found $( $DecoratedAuditLogEntries.Count ) new audit entries"
 
 
-foreach ($item in $decoratedAuditLogEntries ) {
+foreach ($item in $DecoratedAuditLogEntries ) {
     $item.data = $item.data | ConvertTo-Json -Compress -Depth 100
-    #$item.timestamp = $item.timestamp.ToUniversalTime() | Get-Date -Format o
 }
 
-$RecordsJson = $decoratedAuditLogEntries | `
+$RecordsJson = $DecoratedAuditLogEntries | `
     Select-Object -ExcludeProperty actorImageUrl | `
     ConvertTo-Json 
 
 
 $StatusCode = Post-LogAnalyticsData -customerId $CustomerId -sharedKey $SharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($recordsJson)) -logType $LogType
 
-Write-Output -InputObject $StatusCode
-
-
 if($StatusCode -eq 200){
     Set-AutomationVariable -Name LastAzureDevOpsSyncDate -Value $endTimeQuery
+    Write-Output -InputObject 'Azure DevOps audi logs forwarding completed successfully'
 }
