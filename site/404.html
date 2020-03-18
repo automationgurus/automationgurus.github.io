@@ -36,7 +36,7 @@
     
     
       
-        <title>The Automation Bible</title>
+        <title>Automation Bible</title>
       
     
     
@@ -59,6 +59,31 @@
     
     
       
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-160963982-1", "automate.guru")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
     
     
   </head>
@@ -80,7 +105,7 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="/." title="The Automation Bible" aria-label="The Automation Bible" class="md-header-nav__button md-logo">
+        <a href="/." title="Automation Bible" aria-label="Automation Bible" class="md-header-nav__button md-logo">
           
             <i class="md-icon"></i>
           
@@ -93,7 +118,7 @@
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           
             <span class="md-header-nav__topic">
-              The Automation Bible
+              Automation Bible
             </span>
             <span class="md-header-nav__topic">
               
@@ -150,12 +175,12 @@
                   <div class="md-sidebar__inner">
                     <nav class="md-nav md-nav--primary" data-md-level="0">
   <label class="md-nav__title md-nav__title--site" for="__drawer">
-    <a href="/." title="The Automation Bible" class="md-nav__button md-logo">
+    <a href="/." title="Automation Bible" class="md-nav__button md-logo">
       
         <i class="md-icon"></i>
       
     </a>
-    The Automation Bible
+    Automation Bible
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -166,8 +191,8 @@
 
 
   <li class="md-nav__item">
-    <a href="/README.md" title="Home" class="md-nav__link">
-      Home
+    <a href="/azure-devops-audit-logs-forwarding/" title="Azure DevOps Audit Logs Forwarder" class="md-nav__link">
+      Azure DevOps Audit Logs Forwarder
     </a>
   </li>
 

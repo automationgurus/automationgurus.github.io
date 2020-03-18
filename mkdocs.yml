@@ -1,13 +1,14 @@
 site_name: Automation Bible #by A.Brodziński & K.Więcek
+
 pages:
-  - Home: 'README.md'
-  - Home: 'test.md'
+  # - Home: 'README.md'
+  # - Home: 'test.md'
 
 theme:
   name: 'material'
 
 nav:
-    - About: 'index.md'
+    # - About: 'index.md'
     - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
     
     # - 'User Guide':
@@ -18,4 +19,7 @@ nav:
     #     - 'How long can tittle be???????asdhajdjkahkjahjdsajk': 'license.md'
     #     - 'Release Notes': 'release-notes.md'
 
-    - Worth to check: 'worth-to-check.md'
+    # - Worth to check: 'worth-to-check.md'
+
+
+google_analytics: ['UA-160963982-1', 'automate.guru']

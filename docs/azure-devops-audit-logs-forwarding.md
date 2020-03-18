@@ -1,283 +1,140 @@
-# Forward Azure DevOps Audit Logs to Log Analaytics Workspace
-<!-- ![alt](azure-devops-audit-logs-forwarding-001.jpg) -->
+# Forward Azure DevOps Audit Logs to Log Analytics Workspace
 
-## Why? What will my company achive?
-
-The most important question is always *why*?
-
-1. Have all audit logs in one place
-2. Search logs with ease using KQL
-3. Collerate with other logs
-4. 
+We developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.
 
 
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-004.jpg)
 
-## What do I need?
+## Why should you read this article? What are the benefits?
 
-| Resource | Role |
-|--|-|
-| Key Vault| Store personal access token secret|
+1. You don't want to browse logs though Azure DevOps web manually.
+1. You don't want to export audit logs to CSV and analyze them in Excel.
+1. You want to have **all audit logs in the same place**. It sounds like your regulator, doesn't it?
+1. You'll be able to **search effectively** across logs, using Kusto Query Language.
+1. You want to **keep** audit logs for more than 90 days.
+1. You'll easily bind ADO events to other events from another part of your environment.
+1. You'll Grab details about activities like permissions changes, deleted resources, branch policy changes.
+1. If you're **IaC enthusiastic**, then the majority of you work in ADO. It's worth to capture events from there.
 
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-002.jpg)
 
-## Update only incremental
+## What is available out of the box?
 
-1. Get value of *Set-AutomationVariable* variable from Azure Automation Account
-2. Upload delta to Log Analytics Workspace
-3. Update *Set-AutomationVariable* value
+<!-- ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-005.jpg) -->
 
-## How does it work?
+- Browsing logs through web portal.
+- Exporting them to JSON/ CSV
+- Analyze them using Excel/ custom tools.
 
-1. Trigger runbook execution by Azure Automation Schedule.
-2. Test 
-   * Test2
+More general information about Azure DevOps Auditing is available in the link below. It's not our purpose to paraphrase MS documentation. 
+Please read the following part of their documentation to get more details about ADO auditing in general.
 
-## Prepare infrastructure
+[You can find more details here!](https://docs.microsoft.com/en-us/azure/devops/organizations/settings/azure-devops-auditing?view=azure-devops&tabs=preview-page)
 
-1. In your Azure DevOps Organization create Personal Access Token with *read audit log events, manage and delete streams* scope.
+## Acronyms and abbreviations 
 
-2. Create Azure Automation Account with RunAs account.
+- **ADO** - Azure DevOps
+- **ORG** - Azure DevOps Organization
+- **PAT** - Personal Access Token from ADO
 
-3. Create Azure Key Vault.
+- **AAA** - Azure Automation Account
+- **ARA** - Azure Run As Account
 
-4. Add *get and list secret* permission to *Azure Run As Account*.
+- **AKV** - Azure Key Vault
 
-5. Create new secret named *AzureDevOpsPersonalAccessToken*. Set PAT as a avalue.
-
-
-
-Allow 
-
-
-
-# Step by step instruction
-
-## Create personal access token
-
+- **LAW** - Azure Log Analytics Workspace
 
 
-1. Navigate to your organization
+## Who are you?
 
-```
-https://dev.azure.com/{OrganizationName}/
+We assume that...
+
+```text
+PS C:\> $You.SessionLevelReadiness -GE 200
+True
 ```
 
-2. 
+... so we're not providing detailed, step by step instructions on how to create every single resource required to deploy this solution.
+We believe that you can deploy and configure them without additional instructions, or you're able to find them on your own.
+
+## Prepare infrastructure 
+
+Here are required resources and it's the configuration required to deploy the described solution:
+
+- Organization in Azure DevOps with enabled auditing.
+- Personal Access Token with *read audit log events, manage and delete streams* scope.
+- Azure Automation Account with *Azure Run As Account*. 
+- AAA string variables named KeyVaultName, WorkspaceId, OrganizationName
+- AAA string variable named LastAzureDevOpsSyncDate with round-trip date/time pattern value (for example *2020-01-01T00:00:00.0000001Z*)
+- Azure Key Vault
+- AKV *Get and list secret* access policy for ARA.
+- *AzureDevOpsPersonalAccessToken* secret in AKV containing PAT value.
+- Azure Log Analytics Workspace.
+- *Shared key read* permissions for ARA.
+- Azure Automation Powershell Runbook.
+
+## Solution overview. More details.
+
+1. Every single hour Azure Automation Runbook (AAC) is invoked by schedule.
+2. Set context. All actions are performed in the context of *Azure Run As Account*. This account was created during Automation Account creation.
+3. Get parameters (read details above).
+4. Get all ADO audit logs entries between *LastAzureDevOpsSyncDate* and current date and time.
+5. Upload event to Log Analytics Workspace via REST API call.
+6. Update *LastAzureDevOpsSyncDate*.
 
 
-### Short version
+## Solution parameters
 
-1. Scheduler triggers Powershell runbook.
-2. Get
+| Script Parameter   | Source/ Where you should set it |
+|--------------------|-|
+| $KeyVaultName      | KeyVaultName variable from Automation Account |
+| $StartTime         | LastAzureDevOpsSyncDate variable from Automation Account | 
+| $OrganizationName  | OrganizationName variable from Automation Account |
+| $CustomerId        | WorkspaceId variable from Automation Account |
+| $PersonAccessToken | AzureDevOpsPersonalAccessToken secret from  Azure KeyVault |
+| $SharedKey         | SharedKey property from Log Analytics Workspace (Id = $CustomerId) |
 
-### Detailed version
 
+## Powershell Runbook
 
-In Azure portal you can have audit logs.
+We use Build-Signature and Post-LogAnalyticsData from 
+[MS DOCS: Data collector api](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api)
+. In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced this behavior.
 
+You can find the script we use here: TBD
 
-``` powershell
-$LogType = "AzureDevOps"
+Some more description about actions inside the script
 
-$Conn = Get-AutomationConnection -Name AzureRunAsConnection
-Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint
-$AzureContext = Select-AzSubscription -SubscriptionId $Conn.SubscriptionID
+Get variables from Azure Automation:
 
-$KeyVaultName =  Get-AutomationVariable -Name KeyVaultName
-Write-Output -InputObject 'Get keyvault name from automation account variables - success'
-
+```powershell
 $OrganizationName = Get-AutomationVariable -Name OrganizationName
-Write-Output -InputObject 'Get Azure DevOps organization name from automation account variables - success'
+```
 
-$CustomerId = Get-AutomationVariable -Name WorkspaceId
-Write-Output -InputObject 'Get Log Analytics Workspace Id from automation account variables - success'
+Get LAW SharedKey (it's required to invoke API calls)
 
-$SharedKey = (Get-AzKeyVaultSecret -VaultName $KeyVaultName  -Name 'LogAnalyticsSharedKey').SecretValueText 
-
-<#
-$LogAnalyticsWorkspace = Get-AzOperationalInsightsWorkspace | Where-Object -Property CustomerId -EQ $CustomerId
+```powershell
 $SharedKey = Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspace.ResourceGroupName -Name $logAnalyticsWorkspace.Name
-Write-Output -InputObject "Get shared key directly from '$( $logAnalyticsWorkspace.Name )  - success"
-#>
+```
 
-$PersonAccessToken = (Get-AzKeyVaultSecret -VaultName $KeyVaultName  -Name 'AzureDevOpsPersonalAccessToken').SecretValueText 
-Write-Output -InputObject "Get Personal Access Token from key vault '$( $KeyVaultName  )' - success"
-
-
-$startTime = Get-AutomationVariable -Name LastAzureDevOpsSyncDate
-$startTime = $startTime.ToUniversalTime().GetDateTimeFormats("o")
-
-
-$endTime = [DateTime]::Now.ToUniversalTime()
-$endTimeQuery = $endTime.GetDateTimeFormats("o")
-
-Write-Output -InputObject "Script will look for audi events created between $( $startDate ) and $( $endTime )"
-
-
-$base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes(("{0}:{1}" -f 'basic',$PersonAccessToken)))
-
-$headers = @{
-    Authorization = "Basic $base64AuthInfo"
-}
-
-[array]$apiOutputs = @()
-[string]$continuationToken = ''
-
-do {
-    $endpointUri = "https://auditservice.dev.azure.com/$( $OrganizationName )/" + 
-            "_apis/audit/auditlog?api-version=5.1-preview.1" # + "&skipAggregation=$( $skipAggregation )"
-    $endpointUri += "&batchSize=200"
-    $endpointUri += "&skipAggregation=true"
-    $endpointUri += "&startTime=$( $startTime )"
-    $endpointUri += "&endTime=$( $endTime )"
-
-    #detecting first run
-    if ($continuationToken) {
-        $endpointUri += "&continuationToken=$( $continuationToken )"
-    }
-
-    $apiOutput = Invoke-RestMethod -Uri $endpointUri -Headers $headers  -Method Get 
-    $continuationToken = $apiOutput.continuationToken #tu
-
-    #$apiOutput.decoratedAuditLogEntries
-
-    $apiOutputs += $apiOutput
-
-
-} while ($apiOutput.hasMore)
-
-$decoratedAuditLogEntries = $apiOutputs.decoratedAuditLogEntries 
-
-if(-not $decoratedAuditLogEntries) {
-    Write-Output -InputObject 'There are no new audit logs.'
-    return;
-}
-
-Write-Output -InputObject "Found $( $decoratedAuditLogEntries.Count ) new audit entries"
-
-
-foreach ($item in $decoratedAuditLogEntries ) {
-    $item.data = $item.data | ConvertTo-Json -Compress -Depth 100
-    #$item.timestamp = $item.timestamp.ToUniversalTime() | Get-Date -Format o
-}
-
-$recordsJson = $decoratedAuditLogEntries | `
-    Select-Object -ExcludeProperty actorImageUrl | `
-    ConvertTo-Json 
-
-Write-Output -InputObject $recordsJson 
-
-Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
-{
-    $xHeaders = "x-ms-date:" + $date
-    $stringToHash = $method + "`n" + $contentLength + "`n" + $contentType + "`n" + $xHeaders + "`n" + $resource
-
-    $bytesToHash = [Text.Encoding]::UTF8.GetBytes($stringToHash)
-    $keyBytes = [Convert]::FromBase64String($sharedKey)
-
-    $sha256 = New-Object System.Security.Cryptography.HMACSHA256
-    $sha256.Key = $keyBytes
-    $calculatedHash = $sha256.ComputeHash($bytesToHash)
-    $encodedHash = [Convert]::ToBase64String($calculatedHash)
-    $authorization = 'SharedKey {0}:{1}' -f $customerId,$encodedHash
-    return $authorization
-}
-
-Function Post-LogAnalyticsData($customerId, $sharedKey, $body, $logType)
-{
-    $method = "POST"
-    $contentType = "application/json"
-    $resource = "/api/logs"
-    $rfc1123date = [DateTime]::UtcNow.ToString("r")
-    $contentLength = $body.Length
-    $signature = Build-Signature `
-        -customerId $customerId `
-        -sharedKey $sharedKey `
-        -date $rfc1123date `
-        -contentLength $contentLength `
-        -method $method `
-        -contentType $contentType `
-        -resource $resource
-    $uri = "https://" + $customerId + ".ods.opinsights.azure.com" + $resource + "?api-version=2016-04-01"
-
-    $headers = @{
-        "Authorization" = $signature;
-        "Log-Type" = $logType;
-        "x-ms-date" = $rfc1123date;
-        "time-generated-field" = "timestamp";
-    }
-
-    $response = Invoke-WebRequest -Uri $uri -Method $method -ContentType $contentType -Headers $headers -Body $body -UseBasicParsing
-    return $response.StatusCode
-
-}
-
-$statusCode = Post-LogAnalyticsData -customerId $customerId -sharedKey $sharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($recordsJson)) -logType $logType
-
-Write-Output -InputObject $statusCode
-
-if($statusCode -eq 200){
-    Set-AutomationVariable -Name LastAzureDevOpsSyncDate -Value $endTime
-}
+```powershell
+$endpointUri = "https://auditservice.dev.azure.com/$( $OrganizationName )/" + 
+        "_apis/audit/auditlog?api-version=5.1-preview.1" # + "&skipAggregation=$( $skipAggregation )"
+$endpointUri += "&batchSize=200"
+$endpointUri += "&skipAggregation=true"
+$endpointUri += "&startTime=$( $StartTime )"
+$endpointUri += "&endTime=$( $endTime )"
 
 ```
 
-<!-- 
-nie da sie z portalu wywnioskowac kto zlecil deployment 
-mozna pobrac logi z LAW: json/ csv/ portal i probowac wnioskowac, lub - do praktycznego przykladu sie nada
-dwie opcje pobierania shared key - dodanie custom roli / uprawnieni do workspace / utrzymywanie wszystkiego w 
 
-decyzje
-KV - rotacja kluczy w KV spowoduje konieczność update w KV - chcemy tego uniknac
-ustawienie zmiennej w Azure Automation - ma sens
-gdzie trzymac PATa - azureautomation/ kv - historia... + moze tez persystencje/ nigdzie/ 
-czy PAT jest potrzebny, bo moze dac dostep do API (full) na SP
-
-gdzie trzymac persystencje - kv - azure automation
-
-customerid - kv 
-
-
-update date time variable ... :| dlatego string ostatecznie ...
-
-
-podejscie IaC powoduje, ze z portalu widac tylko SPNa, ktory jest uzywany w ADO.
-
-get last check date
-upload delta to log analytics workspace
-update date
-
-pierwszy pomysl to bylo wsadzic PATa, i pozostale secrety do KV, ale moznaby wykroic odpowiednia role, ale mam kontrybutora...
-
-
-nie dzialalo z zaufanych Azure...
-
--->
-
-# deploy keyvault
-
-## Prepare infrastructure
-
-### Key Vault
-
-### Azure Automation Account
+###
 
 
 
+## It's time to rest and check what we did
 
-## Our mission
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-```json
-{
-    "type":2
-}
-```
-
-# Lets test?
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-001.jpg)
 
 ```
 AzureDevOps_CL 
@@ -286,7 +143,13 @@ AzureDevOps_CL
 | project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
 ```
 
-|TimeGenerated|	actionId_s|	scopeDisplayName_s|	details_s|	actorDisplayName_s|
+|TimeGenerated| actionId_s|     scopeDisplayName_s|     details_s|      actorDisplayName_s|
 |-|-|-|-|-|
-|2020-03-15T16:47:19.367Z|	Extension.Installed|	AutomationGuyIO (Organization)|	Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"|	Kamil Więcek
+|2020-03-15T16:47:19.367Z|      Extension.Installed|    AutomationGuyIO (Organization)| Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"|      Kamil Więcek
 
+## Solution development insights
+
+- ARA becomes a Contributor by default. Consider changing that.
+- Storing LAW SharedKey in AKV is one of the options, but it'll force you to update it on change. We decided to get it directly during the script execution. 
+- We could use AAA encrypted value to store PAT, but in case of storing secrets, AKV should always be the primary choice. Other parameters we don't consider as secrets, so we store them in AAA variables.
+- Enabling *Allow trusted Microsoft services to bypass this firewall* in AKW Networking configuration didn't allow access from AAA. Therefore we set this setting to *Allow access from all networks*.
