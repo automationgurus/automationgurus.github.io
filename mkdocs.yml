@@ -10,8 +10,10 @@ theme:
     primary: 'blue'
     accent: 'blue'
   font:
-      text: 'Ubuntu'
-      code: 'Consolas'
+      # text: 'Ubuntu'
+      # code: 'Consolas'
+      text: 'Roboto'
+      code: 'Roboto Mono'
       # code: 'Ubuntu Mono'
 
 
@@ -34,3 +36,8 @@ extra:
   disqus: 'automate-guru'
 
 google_analytics: ['UA-160963982-1', 'auto']
+
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false

@@ -56,8 +56,8 @@
     
       
         <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:300,400,400i,700%7CConsolas&display=fallback">
-        <style>body,input{font-family:"Ubuntu","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Consolas","Courier New",Courier,monospace}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
       
     
     <link rel="stylesheet" href="../assets/fonts/material-icons.css">
@@ -469,11 +469,12 @@
 <p>You wonder who and when did install this AzSK Extension, so you ask Log Analytics.</p>
 </li>
 </ol>
-<pre><code>AzureDevOps_CL 
+<div class="codehilite"><pre><span></span><code>AzureDevOps_CL 
 | sort by TimeGenerated desc nulls last 
 | where actionId_s == &quot;Extension.Installed&quot; 
 | project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
-</code></pre>
+</code></pre></div>
+
 
 <table>
 <thead>
@@ -543,9 +544,10 @@ Please read the following part of their documentation to get more details about 
 </ul>
 <h2 id="who-are-you">Who are you?</h2>
 <p>We assume that...</p>
-<pre><code class="text">PS C:\&gt; $You.SessionLevelReadiness -GE 200
+<div class="codehilite"><pre><span></span><code>PS C:\&gt; $You.SessionLevelReadiness -GE 200
 True
-</code></pre>
+</code></pre></div>
+
 
 <p>... so we're not providing detailed, step by step instructions on how to create every single resource required to deploy this solution.
 We believe that you can deploy and configure them without additional instructions, or you're able to find them on your own.</p>
@@ -613,133 +615,134 @@ We believe that you can deploy and configure them without additional instruction
 <p>We use <em>Build-Signature</em> and <em>Post-LogAnalyticsData</em> from 
 <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api">MS DOCS: Data collector api</a>
 . In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced that.</p>
-<pre><code>Function Build-Signature ($customerId, $sharedKey, $date, $contentLength, $method, $contentType, $resource)
-{
-    $xHeaders = &quot;x-ms-date:&quot; + $date
-    $stringToHash = $method + &quot;`n&quot; + $contentLength + &quot;`n&quot; + $contentType + &quot;`n&quot; + $xHeaders + &quot;`n&quot; + $resource
+<div class="codehilite"><pre><span></span><code><span class="k">Function</span> <span class="n">Build-Signature</span> <span class="p">(</span><span class="nv">$customerId</span><span class="p">,</span> <span class="nv">$sharedKey</span><span class="p">,</span> <span class="nv">$date</span><span class="p">,</span> <span class="nv">$contentLength</span><span class="p">,</span> <span class="nv">$method</span><span class="p">,</span> <span class="nv">$contentType</span><span class="p">,</span> <span class="nv">$resource</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$xHeaders</span> <span class="p">=</span> <span class="s2">&quot;x-ms-date:&quot;</span> <span class="p">+</span> <span class="nv">$date</span>
+    <span class="nv">$stringToHash</span> <span class="p">=</span> <span class="nv">$method</span> <span class="p">+</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">&quot;</span> <span class="p">+</span> <span class="nv">$contentLength</span> <span class="p">+</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">&quot;</span> <span class="p">+</span> <span class="nv">$contentType</span> <span class="p">+</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">&quot;</span> <span class="p">+</span> <span class="nv">$xHeaders</span> <span class="p">+</span> <span class="s2">&quot;</span><span class="se">`n</span><span class="s2">&quot;</span> <span class="p">+</span> <span class="nv">$resource</span>
 
-    $bytesToHash = [Text.Encoding]::UTF8.GetBytes($stringToHash)
-    $keyBytes = [Convert]::FromBase64String($sharedKey)
+    <span class="nv">$bytesToHash</span> <span class="p">=</span> <span class="no">[Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$stringToHash</span><span class="p">)</span>
+    <span class="nv">$keyBytes</span> <span class="p">=</span> <span class="no">[Convert]</span><span class="p">::</span><span class="n">FromBase64String</span><span class="p">(</span><span class="nv">$sharedKey</span><span class="p">)</span>
 
-    $sha256 = New-Object System.Security.Cryptography.HMACSHA256
-    $sha256.Key = $keyBytes
-    $calculatedHash = $sha256.ComputeHash($bytesToHash)
-    $encodedHash = [Convert]::ToBase64String($calculatedHash)
-    $authorization = 'SharedKey {0}:{1}' -f $customerId,$encodedHash
-    return $authorization
-}
+    <span class="nv">$sha256</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">System</span><span class="p">.</span><span class="n">Security</span><span class="p">.</span><span class="n">Cryptography</span><span class="p">.</span><span class="n">HMACSHA256</span>
+    <span class="nv">$sha256</span><span class="p">.</span><span class="n">Key</span> <span class="p">=</span> <span class="nv">$keyBytes</span>
+    <span class="nv">$calculatedHash</span> <span class="p">=</span> <span class="nv">$sha256</span><span class="p">.</span><span class="n">ComputeHash</span><span class="p">(</span><span class="nv">$bytesToHash</span><span class="p">)</span>
+    <span class="nv">$encodedHash</span> <span class="p">=</span> <span class="no">[Convert]</span><span class="p">::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="nv">$calculatedHash</span><span class="p">)</span>
+    <span class="nv">$authorization</span> <span class="p">=</span> <span class="s1">&#39;SharedKey {0}:{1}&#39;</span> <span class="o">-f</span> <span class="nv">$customerId</span><span class="p">,</span><span class="nv">$encodedHash</span>
+    <span class="k">return</span> <span class="nv">$authorization</span>
+<span class="p">}</span>
 
-Function Post-LogAnalyticsData($ustomerId, $sharedKey, $body, $logType)
-{
-    $method = &quot;POST&quot;
-    $contentType = &quot;application/json&quot;
-    $resource = &quot;/api/logs&quot;
-    $rfc1123date = [DateTime]::UtcNow.ToString(&quot;r&quot;)
-    $contentLength = $body.Length
-    $signature = Build-Signature `
-        -customerId $customerId `
-        -sharedKey $sharedKey `
-        -date $rfc1123date `
-        -contentLength $contentLength `
-        -method $method `
-        -contentType $contentType `
-        -resource $resource
-    $uri = &quot;https://&quot; + $customerId + &quot;.ods.opinsights.azure.com&quot; + $resource + &quot;?api-version=2016-04-01&quot;
+<span class="k">Function</span> <span class="n">Post-LogAnalyticsData</span><span class="p">(</span><span class="nv">$ustomerId</span><span class="p">,</span> <span class="nv">$sharedKey</span><span class="p">,</span> <span class="nv">$body</span><span class="p">,</span> <span class="nv">$logType</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="nv">$method</span> <span class="p">=</span> <span class="s2">&quot;POST&quot;</span>
+    <span class="nv">$contentType</span> <span class="p">=</span> <span class="s2">&quot;application/json&quot;</span>
+    <span class="nv">$resource</span> <span class="p">=</span> <span class="s2">&quot;/api/logs&quot;</span>
+    <span class="nv">$rfc1123date</span> <span class="p">=</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">UtcNow</span><span class="p">.</span><span class="n">ToString</span><span class="p">(</span><span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="nv">$contentLength</span> <span class="p">=</span> <span class="nv">$body</span><span class="p">.</span><span class="n">Length</span>
+    <span class="nv">$signature</span> <span class="p">=</span> <span class="n">Build-Signature</span> <span class="p">`</span>
+        <span class="n">-customerId</span> <span class="nv">$customerId</span> <span class="p">`</span>
+        <span class="n">-sharedKey</span> <span class="nv">$sharedKey</span> <span class="p">`</span>
+        <span class="n">-date</span> <span class="nv">$rfc1123date</span> <span class="p">`</span>
+        <span class="n">-contentLength</span> <span class="nv">$contentLength</span> <span class="p">`</span>
+        <span class="n">-method</span> <span class="nv">$method</span> <span class="p">`</span>
+        <span class="n">-contentType</span> <span class="nv">$contentType</span> <span class="p">`</span>
+        <span class="n">-resource</span> <span class="nv">$resource</span>
+    <span class="nv">$uri</span> <span class="p">=</span> <span class="s2">&quot;https://&quot;</span> <span class="p">+</span> <span class="nv">$customerId</span> <span class="p">+</span> <span class="s2">&quot;.ods.opinsights.azure.com&quot;</span> <span class="p">+</span> <span class="nv">$resource</span> <span class="p">+</span> <span class="s2">&quot;?api-version=2016-04-01&quot;</span>
 
-    $headers = @{
-        &quot;Authorization&quot; = $signature;
-        &quot;Log-Type&quot; = $logType;
-        &quot;x-ms-date&quot; = $rfc1123date;
-        &quot;time-generated-field&quot; = &quot;timestamp&quot;;
-    }
+    <span class="nv">$headers</span> <span class="p">=</span> <span class="p">@{</span>
+        <span class="s2">&quot;Authorization&quot;</span> <span class="p">=</span> <span class="nv">$signature</span><span class="p">;</span>
+        <span class="s2">&quot;Log-Type&quot;</span> <span class="p">=</span> <span class="nv">$logType</span><span class="p">;</span>
+        <span class="s2">&quot;x-ms-date&quot;</span> <span class="p">=</span> <span class="nv">$rfc1123date</span><span class="p">;</span>
+        <span class="s2">&quot;time-generated-field&quot;</span> <span class="p">=</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
 
-    $response = Invoke-WebRequest -Uri $uri -Method $method -ContentType $contentType -Headers $headers -Body $body -UseBasicParsing
-    return $response.StatusCode
+    <span class="nv">$response</span> <span class="p">=</span> <span class="nb">Invoke-WebRequest</span> <span class="n">-Uri</span> <span class="nv">$uri</span> <span class="n">-Method</span> <span class="nv">$method</span> <span class="n">-ContentType</span> <span class="nv">$contentType</span> <span class="n">-Headers</span> <span class="nv">$headers</span> <span class="n">-Body</span> <span class="nv">$body</span> <span class="n">-UseBasicParsing</span>
+    <span class="k">return</span> <span class="nv">$response</span><span class="p">.</span><span class="n">StatusCode</span>
 
-}
+<span class="p">}</span>
 
-$LogType = &quot;AzureDevOps&quot;
+<span class="nv">$LogType</span> <span class="p">=</span> <span class="s2">&quot;AzureDevOps&quot;</span>
 
-$Conn = Get-AutomationConnection -Name AzureRunAsConnection
-Connect-AzAccount -ServicePrincipal -Tenant $Conn.TenantID -ApplicationId $Conn.ApplicationID -CertificateThumbprint $Conn.CertificateThumbprint | Out-Null
-Select-AzSubscription -SubscriptionId $Conn.SubscriptionID | Out-Null
+<span class="nv">$Conn</span> <span class="p">=</span> <span class="nb">Get-AutomationConnection</span> <span class="n">-Name</span> <span class="n">AzureRunAsConnection</span>
+<span class="nb">Connect-AzAccount</span> <span class="n">-ServicePrincipal</span> <span class="n">-Tenant</span> <span class="nv">$Conn</span><span class="p">.</span><span class="n">TenantID</span> <span class="n">-ApplicationId</span> <span class="nv">$Conn</span><span class="p">.</span><span class="n">ApplicationID</span> <span class="n">-CertificateThumbprint</span> <span class="nv">$Conn</span><span class="p">.</span><span class="n">CertificateThumbprint</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="nb">Select-AzSubscription</span> <span class="n">-SubscriptionId</span> <span class="nv">$Conn</span><span class="p">.</span><span class="n">SubscriptionID</span> <span class="p">|</span> <span class="nb">Out-Null</span>
 
-$KeyVaultName =  Get-AutomationVariable -Name KeyVaultName
-Write-Output -InputObject 'Get keyvault name from automation account variables - success'
+<span class="nv">$KeyVaultName</span> <span class="p">=</span>  <span class="nb">Get-AutomationVariable</span> <span class="n">-Name</span> <span class="n">KeyVaultName</span>
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s1">&#39;Get keyvault name from automation account variables - success&#39;</span>
 
-$OrganizationName = Get-AutomationVariable -Name OrganizationName
-Write-Output -InputObject 'Get Azure DevOps organization name from automation account variables - success'
+<span class="nv">$OrganizationName</span> <span class="p">=</span> <span class="nb">Get-AutomationVariable</span> <span class="n">-Name</span> <span class="n">OrganizationName</span>
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s1">&#39;Get Azure DevOps organization name from automation account variables - success&#39;</span>
 
-$CustomerId = Get-AutomationVariable -Name WorkspaceId
-Write-Output -InputObject 'Get Log Analytics Workspace Id from automation account variables - success'
+<span class="nv">$CustomerId</span> <span class="p">=</span> <span class="nb">Get-AutomationVariable</span> <span class="n">-Name</span> <span class="n">WorkspaceId</span>
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s1">&#39;Get Log Analytics Workspace Id from automation account variables - success&#39;</span>
 
-$LogAnalyticsWorkspace = Get-AzOperationalInsightsWorkspace | Where-Object -Property CustomerId -EQ $CustomerId
-$SharedKey = (Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspace.ResourceGroupName -Name $logAnalyticsWorkspace.Name).PrimarySharedKey
-Write-Output -InputObject &quot;Get shared key directly from '$( $logAnalyticsWorkspace.Name )  - success&quot;
+<span class="nv">$LogAnalyticsWorkspace</span> <span class="p">=</span> <span class="nb">Get-AzOperationalInsightsWorkspace</span> <span class="p">|</span> <span class="nb">Where-Object</span> <span class="n">-Property</span> <span class="n">CustomerId</span> <span class="o">-EQ</span> <span class="nv">$CustomerId</span>
+<span class="nv">$SharedKey</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzOperationalInsightsWorkspaceSharedKey</span> <span class="n">-ResourceGroupName</span> <span class="nv">$logAnalyticsWorkspace</span><span class="p">.</span><span class="n">ResourceGroupName</span> <span class="n">-Name</span> <span class="nv">$logAnalyticsWorkspace</span><span class="p">.</span><span class="n">Name</span><span class="p">).</span><span class="n">PrimarySharedKey</span>
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s2">&quot;Get shared key directly from &#39;</span><span class="p">$(</span> <span class="nv">$logAnalyticsWorkspace</span><span class="p">.</span><span class="n">Name</span> <span class="p">)</span><span class="s2">  - success&quot;</span>
 
-$PersonAccessToken = (Get-AzKeyVaultSecret -VaultName $KeyVaultName  -Name 'AzureDevOpsPersonalAccessToken').SecretValueText 
-Write-Output -InputObject &quot;Get Personal Access Token from key vault '$( $KeyVaultName  )' - success&quot;
+<span class="nv">$PersonAccessToken</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzKeyVaultSecret</span> <span class="n">-VaultName</span> <span class="nv">$KeyVaultName</span>  <span class="n">-Name</span> <span class="s1">&#39;AzureDevOpsPersonalAccessToken&#39;</span><span class="p">).</span><span class="n">SecretValueText</span> 
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s2">&quot;Get Personal Access Token from key vault &#39;</span><span class="p">$(</span> <span class="nv">$KeyVaultName</span>  <span class="p">)</span><span class="s2">&#39; - success&quot;</span>
 
-$StartTime = Get-AutomationVariable -Name LastAzureDevOpsSyncDate
-$StartTime = $StartTime.ToUniversalTime().GetDateTimeFormats(&quot;o&quot;)
+<span class="nv">$StartTime</span> <span class="p">=</span> <span class="nb">Get-AutomationVariable</span> <span class="n">-Name</span> <span class="n">LastAzureDevOpsSyncDate</span>
+<span class="nv">$StartTime</span> <span class="p">=</span> <span class="nv">$StartTime</span><span class="p">.</span><span class="n">ToUniversalTime</span><span class="p">().</span><span class="n">GetDateTimeFormats</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
 
-[string]$EndTimeQuery = [DateTime]::Now.ToUniversalTime().GetDateTimeFormats(&quot;o&quot;)
+<span class="no">[string]</span><span class="nv">$EndTimeQuery</span> <span class="p">=</span> <span class="no">[DateTime]</span><span class="p">::</span><span class="n">Now</span><span class="p">.</span><span class="n">ToUniversalTime</span><span class="p">().</span><span class="n">GetDateTimeFormats</span><span class="p">(</span><span class="s2">&quot;o&quot;</span><span class="p">)</span>
 
-Write-Output -InputObject &quot;Script will look for audi events created between $( $StartTime ) and $( $endTimeQuery )&quot;
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s2">&quot;Script will look for audi events created between </span><span class="p">$(</span> <span class="nv">$StartTime</span> <span class="p">)</span><span class="s2"> and </span><span class="p">$(</span> <span class="nv">$endTimeQuery</span> <span class="p">)</span><span class="s2">&quot;</span>
 
-$Base64AuthInfo = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes((&quot;{0}:{1}&quot; -f 'basic',$PersonAccessToken)))
+<span class="nv">$Base64AuthInfo</span> <span class="p">=</span> <span class="no">[Convert]</span><span class="p">::</span><span class="n">ToBase64String</span><span class="p">(</span><span class="no">[Text.Encoding]</span><span class="p">::</span><span class="n">ASCII</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">((</span><span class="s2">&quot;{0}:{1}&quot;</span> <span class="o">-f</span> <span class="s1">&#39;basic&#39;</span><span class="p">,</span><span class="nv">$PersonAccessToken</span><span class="p">)))</span>
 
-$Headers = @{
-    Authorization = &quot;Basic $Base64AuthInfo&quot;
-}
+<span class="nv">$Headers</span> <span class="p">=</span> <span class="p">@{</span>
+    <span class="n">Authorization</span> <span class="p">=</span> <span class="s2">&quot;Basic $Base64AuthInfo&quot;</span>
+<span class="p">}</span>
 
-[array]$ApiOutputs = @()
-[string]$ContinuationToken = ''
+<span class="no">[array]</span><span class="nv">$ApiOutputs</span> <span class="p">=</span> <span class="p">@()</span>
+<span class="no">[string]</span><span class="nv">$ContinuationToken</span> <span class="p">=</span> <span class="s1">&#39;&#39;</span>
 
-do {
-    $EndpointUri = &quot;https://auditservice.dev.azure.com/$( $OrganizationName )/_apis/audit/auditlog?api-version=5.1-preview.1&quot;
-    $EndpointUri += &quot;&amp;batchSize=200&quot;
-    $EndpointUri += &quot;&amp;skipAggregation=true&quot;
-    $EndpointUri += &quot;&amp;startTime=$( $StartTime )&quot;
-    $EndpointUri += &quot;&amp;endTime=$( $endTimeQuery )&quot;
+<span class="k">do</span> <span class="p">{</span>
+    <span class="nv">$EndpointUri</span> <span class="p">=</span> <span class="s2">&quot;https://auditservice.dev.azure.com/</span><span class="p">$(</span> <span class="nv">$OrganizationName</span> <span class="p">)</span><span class="s2">/_apis/audit/auditlog?api-version=5.1-preview.1&quot;</span>
+    <span class="nv">$EndpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;batchSize=200&quot;</span>
+    <span class="nv">$EndpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;skipAggregation=true&quot;</span>
+    <span class="nv">$EndpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;startTime=</span><span class="p">$(</span> <span class="nv">$StartTime</span> <span class="p">)</span><span class="s2">&quot;</span>
+    <span class="nv">$EndpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;endTime=</span><span class="p">$(</span> <span class="nv">$endTimeQuery</span> <span class="p">)</span><span class="s2">&quot;</span>
 
-    if ($ContinuationToken) {
-        $EndpointUri += &quot;&amp;continuationToken=$( $continuationToken )&quot;
-    }
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$ContinuationToken</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nv">$EndpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;continuationToken=</span><span class="p">$(</span> <span class="nv">$continuationToken</span> <span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
 
-    $ApiOutput = Invoke-RestMethod -Uri $endpointUri -Headers $headers  -Method Get 
-    $ContinuationToken = $ApiOutput.continuationToken #tu
+    <span class="nv">$ApiOutput</span> <span class="p">=</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="nv">$endpointUri</span> <span class="n">-Headers</span> <span class="nv">$headers</span>  <span class="n">-Method</span> <span class="n">Get</span> 
+    <span class="nv">$ContinuationToken</span> <span class="p">=</span> <span class="nv">$ApiOutput</span><span class="p">.</span><span class="n">continuationToken</span> <span class="c">#tu</span>
 
-    $ApiOutputs += $ApiOutput
+    <span class="nv">$ApiOutputs</span> <span class="p">+=</span> <span class="nv">$ApiOutput</span>
 
-} while ($ApiOutput.hasMore)
+<span class="p">}</span> <span class="k">while</span> <span class="p">(</span><span class="nv">$ApiOutput</span><span class="p">.</span><span class="n">hasMore</span><span class="p">)</span>
 
-[array]$DecoratedAuditLogEntries = $ApiOutputs.decoratedAuditLogEntries 
+<span class="no">[array]</span><span class="nv">$DecoratedAuditLogEntries</span> <span class="p">=</span> <span class="nv">$ApiOutputs</span><span class="p">.</span><span class="n">decoratedAuditLogEntries</span> 
 
-if(-not $DecoratedAuditLogEntries) {
-    Write-Output -InputObject 'There are no new audit logs.'
-    return;
-}
+<span class="k">if</span><span class="p">(</span><span class="o">-not</span> <span class="nv">$DecoratedAuditLogEntries</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s1">&#39;There are no new audit logs.&#39;</span>
+    <span class="k">return</span><span class="p">;</span>
+<span class="p">}</span>
 
-Write-Output -InputObject &quot;Found $( $DecoratedAuditLogEntries.Count ) new audit entries&quot;
-
-
-foreach ($item in $DecoratedAuditLogEntries ) {
-    $item.data = $item.data | ConvertTo-Json -Compress -Depth 100
-}
-
-$RecordsJson = $DecoratedAuditLogEntries | `
-    Select-Object -ExcludeProperty actorImageUrl | `
-    ConvertTo-Json 
+<span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s2">&quot;Found </span><span class="p">$(</span> <span class="nv">$DecoratedAuditLogEntries</span><span class="p">.</span><span class="n">Count</span> <span class="p">)</span><span class="s2"> new audit entries&quot;</span>
 
 
-$StatusCode = Post-LogAnalyticsData -customerId $CustomerId -sharedKey $SharedKey -body ([System.Text.Encoding]::UTF8.GetBytes($recordsJson)) -logType $LogType
+<span class="k">foreach</span> <span class="p">(</span><span class="nv">$item</span> <span class="k">in</span> <span class="nv">$DecoratedAuditLogEntries</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="nv">$item</span><span class="p">.</span><span class="n">data</span> <span class="p">=</span> <span class="nv">$item</span><span class="p">.</span><span class="n">data</span> <span class="p">|</span> <span class="nb">ConvertTo-Json</span> <span class="n">-Compress</span> <span class="n">-Depth</span> <span class="n">100</span>
+<span class="p">}</span>
 
-if($StatusCode -eq 200){
-    Set-AutomationVariable -Name LastAzureDevOpsSyncDate -Value $endTimeQuery
-    Write-Output -InputObject 'Azure DevOps audi logs forwarding completed successfully'
-}
-</code></pre>
+<span class="nv">$RecordsJson</span> <span class="p">=</span> <span class="nv">$DecoratedAuditLogEntries</span> <span class="p">|</span> <span class="p">`</span>
+    <span class="nb">Select-Object</span> <span class="n">-ExcludeProperty</span> <span class="n">actorImageUrl</span> <span class="p">|</span> <span class="p">`</span>
+    <span class="nb">ConvertTo-Json</span> 
+
+
+<span class="nv">$StatusCode</span> <span class="p">=</span> <span class="n">Post-LogAnalyticsData</span> <span class="n">-customerId</span> <span class="nv">$CustomerId</span> <span class="n">-sharedKey</span> <span class="nv">$SharedKey</span> <span class="n">-body</span> <span class="p">(</span><span class="no">[System.Text.Encoding]</span><span class="p">::</span><span class="n">UTF8</span><span class="p">.</span><span class="n">GetBytes</span><span class="p">(</span><span class="nv">$recordsJson</span><span class="p">))</span> <span class="n">-logType</span> <span class="nv">$LogType</span>
+
+<span class="k">if</span><span class="p">(</span><span class="nv">$StatusCode</span> <span class="o">-eq</span> <span class="n">200</span><span class="p">){</span>
+    <span class="nb">Set-AutomationVariable</span> <span class="n">-Name</span> <span class="n">LastAzureDevOpsSyncDate</span> <span class="n">-Value</span> <span class="nv">$endTimeQuery</span>
+    <span class="nb">Write-Output</span> <span class="n">-InputObject</span> <span class="s1">&#39;Azure DevOps audi logs forwarding completed successfully&#39;</span>
+<span class="p">}</span>
+</code></pre></div>
+
 
 <!-- You can find the script we use here
 
@@ -748,26 +751,28 @@ Some more description about actions inside the script
 Get variables from Azure Automation:
 
 
-<pre><code class="powershell">$OrganizationName = Get-AutomationVariable -Name OrganizationName
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nv">$OrganizationName</span> <span class="p">=</span> <span class="nb">Get-AutomationVariable</span> <span class="n">-Name</span> <span class="n">OrganizationName</span>
+</code></pre></div>
+
 
 
 Get LAW SharedKey (it's required to invoke API calls)
 
 
-<pre><code class="powershell">$SharedKey = Get-AzOperationalInsightsWorkspaceSharedKey -ResourceGroupName $logAnalyticsWorkspace.ResourceGroupName -Name $logAnalyticsWorkspace.Name
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nv">$SharedKey</span> <span class="p">=</span> <span class="nb">Get-AzOperationalInsightsWorkspaceSharedKey</span> <span class="n">-ResourceGroupName</span> <span class="nv">$logAnalyticsWorkspace</span><span class="p">.</span><span class="n">ResourceGroupName</span> <span class="n">-Name</span> <span class="nv">$logAnalyticsWorkspace</span><span class="p">.</span><span class="n">Name</span>
+</code></pre></div>
 
 
 
-<pre><code class="powershell">$endpointUri = &quot;https://auditservice.dev.azure.com/$( $OrganizationName )/&quot; + 
-        &quot;_apis/audit/auditlog?api-version=5.1-preview.1&quot; # + &quot;&amp;skipAggregation=$( $skipAggregation )&quot;
-$endpointUri += &quot;&amp;batchSize=200&quot;
-$endpointUri += &quot;&amp;skipAggregation=true&quot;
-$endpointUri += &quot;&amp;startTime=$( $StartTime )&quot;
-$endpointUri += &quot;&amp;endTime=$( $endTime )&quot;
 
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="nv">$endpointUri</span> <span class="p">=</span> <span class="s2">&quot;https://auditservice.dev.azure.com/</span><span class="p">$(</span> <span class="nv">$OrganizationName</span> <span class="p">)</span><span class="s2">/&quot;</span> <span class="p">+</span> 
+        <span class="s2">&quot;_apis/audit/auditlog?api-version=5.1-preview.1&quot;</span> <span class="c"># + &quot;&amp;skipAggregation=$( $skipAggregation )&quot;</span>
+<span class="nv">$endpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;batchSize=200&quot;</span>
+<span class="nv">$endpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;skipAggregation=true&quot;</span>
+<span class="nv">$endpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;startTime=</span><span class="p">$(</span> <span class="nv">$StartTime</span> <span class="p">)</span><span class="s2">&quot;</span>
+<span class="nv">$endpointUri</span> <span class="p">+=</span> <span class="s2">&quot;&amp;endTime=</span><span class="p">$(</span> <span class="nv">$endTime</span> <span class="p">)</span><span class="s2">&quot;</span>
+</code></pre></div>
+
 
 
 
