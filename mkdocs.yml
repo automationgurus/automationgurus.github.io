@@ -6,6 +6,15 @@ pages:
 
 theme:
   name: 'material'
+  palette:
+    primary: 'blue'
+    accent: 'blue'
+  font:
+      text: 'Ubuntu'
+      code: 'Consolas'
+      # code: 'Ubuntu Mono'
+
+
 
 nav:
     # - About: 'index.md'
@@ -21,5 +30,7 @@ nav:
 
     # - Worth to check: 'worth-to-check.md'
 
+extra:
+  disqus: 'automate-guru'
 
-google_analytics: ['UA-160963982-1', 'automate.guru']
+google_analytics: ['UA-160963982-1', 'auto']
