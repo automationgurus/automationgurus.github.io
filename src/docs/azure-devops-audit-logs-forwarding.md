@@ -92,7 +92,7 @@ Here are required resources and it's the configuration required to deploy the de
 - *AzureDevOpsPersonalAccessToken* secret in AKV containing PAT value.
 - Azure Log Analytics Workspace.
 - *Shared key read* permissions for ARA.
-- Azure Automation Powershell **SynchronizeAzureDevOpsAuditLogs** Runbook ([get it here](https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1))
+- Azure Automation Powershell **SynchronizeAzureDevOpsAuditLogs** Runbook ([get it here](https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/SynchronizeAzureDevOpsAuditLogsRunbook.ps1))
 
 ## Solution overview. More details.
 
@@ -118,7 +118,7 @@ Here are required resources and it's the configuration required to deploy the de
 
 ## Powershell Runbook
 
-[Get SynchronizeAzureDevOpsAuditLogsRunbook Source Code](https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1)
+[Get SynchronizeAzureDevOpsAuditLogsRunbook Source Code](https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/SynchronizeAzureDevOpsAuditLogsRunbook.ps1)
 
 We use *Build-Signature* and *Post-LogAnalyticsData* from 
 [MS DOCS: Data collector api](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api)
