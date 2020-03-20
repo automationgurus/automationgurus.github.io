@@ -13,14 +13,15 @@ theme:
       # text: 'Ubuntu'
       # code: 'Consolas'
       text: 'Roboto'
-      code: 'Roboto Mono'
-      # code: 'Ubuntu Mono'
+      # code: 'Roboto Mono'
+      code: 'Ubuntu Mono'
 
 
 
 nav:
     # - About: 'index.md'
     - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
+    # - Azure Subscription With Selenium: 'powershell-selenium-azure-subscription'
     
     # - 'User Guide':
     #     - 'Writing your docs': 'writing-your-docs.md'
