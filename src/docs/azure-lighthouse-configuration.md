@@ -13,31 +13,20 @@
 
 ### From Service provider team perspective
 
-1. Service provider tenant user which is added to proper group get access to new tab in Azure Lighthouse
-![My customers Azure Lighthouse](img/azure-lighthouse-configuration-001.jpg)
-
+1. Service provider tenant user which is added to proper group get access to **My Cusotmers** tab in Azure Lighthouse
 2. Can see all customers which are assigned to him.
-![Customers Azure Lighthouse](img/azure-lighthouse-configuration-002.jpg)
-
 3. Can check AAD Group Membership and related role at the customer destination subscription.
-![AAD group membership](img/azure-lighthouse-configuration-003.jpg)
-
 4. Can check access to customer resource
-![Customer resources](img/azure-lighthouse-configuration-004.jpg)
 
 ### From customer perspective
 
-1. Customer get access to new tab in Azure Lighthouse
-![Service Providers Azure Lighthouse](img/azure-lighthouse-configuration-005.jpg)
+1. Customer get access to new tab in Azure Lighthouse **Service Providers**
 2. Can see all service providers
-![Service Providers Azure Lighthouse](img/azure-lighthouse-configuration-006.jpg)
 3. Display exact delegations for each provider
-![Delegations Azure Lighthouse](img/azure-lighthouse-configuration-007.jpg)
 4. Check offer details and correlated assigned role
-![Offer details Azure Lighthouse](img/azure-lighthouse-configuration-008.jpg)
 
 ## Prerequisites
-1. Azure PowerShell Module installed
+1. Az PowerShell Module installed
 2. Account with Owner role in customer tenant
 3. Access to create and configure Azure Active Directory groups in Manged Service Provider tenant
 
@@ -49,18 +38,56 @@ In such ARM template we basically do the mapping between groups created earlier 
 
 To check role defintion ID use Powershell command
 ```powershell
-(Get-AzureRmRoleDefinition -Name "Name_of_the_role").Id
+(Get-AzRoleDefinition -Name "Name_of_the_role").Id
 ```
 
 To check Azure Active Directory group ID use Powershell command
 ```powershell
 Connect-AzureAD
-(Get-AzureADGroup -SearchString "Name_of_the_AAD_group").ObjectId
+(Get-AzADGroup -Name "Name_of_the_AAD_group").ObjectId
+```
+
+If you don't have yet groups created you can simply create them with following script:
+```powershell
+param(
+    $TenantID,
+    $CustomerName
+)
+
+Connect-AzAccount -Tenant $TenantID
+
+$groups = @(
+    "Logs-Reader", 
+    "Customer-Reader", 
+    "Customer-Contributor"
+)
+
+foreach ($group in $groups) {
+    $groupName = "Lighthouse-$CustomerName-$group"
+    $aadGroup = Get-AzADGroup -DisplayName $groupName
+
+    if ($aadGroup) {
+        Write-Output "Group $groupName already exists."
+    }
+    else {
+        Try {
+            New-AzADGroup -DisplayName $groupName -MailNickname $groupName
+            Start-Sleep -s 5
+            $aadGroup = (Get-AzADGroup -DisplayName $groupName).ObjectId
+            Write-Output "AAD Group $groupName with id $aadGroupId created with success"
+        }
+        Catch {
+            Write-Output "Unexpected error occured during AAD group creation. Error: $($_.exception.Message)"
+        }
+        
+    }
+  
+}
 ```
 
 Here you can find short description of each parameter in ARM
 - **mspOfferName** - name of the offer from the Managed Service Provider
-- **mspOfferDescription** - name of the Managed Service Provider offerin
+- **mspOfferDescription** - name of the Managed Service Provider offering
 - **managedByTenantId** - Managed Service Provider tenant ID
 - **authorizations** - in this part you should provide array according to how you want to configure access in Azure Lighthouse. 
 
