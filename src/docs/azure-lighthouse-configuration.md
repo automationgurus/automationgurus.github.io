@@ -13,12 +13,16 @@
 
 ### From Service provider team perspective
 
+![Azure Lighthouse My customers](img/azure-lighthouse-configuration-001.jpg)
+
 1. Service provider tenant user which is added to proper group get access to **My Cusotmers** tab in Azure Lighthouse
 2. Can see all customers which are assigned to him.
 3. Can check AAD Group Membership and related role at the customer destination subscription.
 4. Can check access to customer resource
 
 ### From customer perspective
+
+![Azure Lighthouse Service Providers](img/azure-lighthouse-configuration-002.jpg)
 
 1. Customer get access to new tab in Azure Lighthouse **Service Providers**
 2. Can see all service providers
@@ -124,10 +128,11 @@ Here you can find short description of each parameter in ARM
 }
 ```
 
-In order to deploy such ARM you can simply use *New-AzDeployment* from PowerShell Az module.
+In order to deploy such ARM you can simply use **New-AzDeployment** from PowerShell Az module.
 
-**IMPORTANT**
-Remember that you must be logged to customer tenant to do that, not Managed Service Provider tenant.
+**IMPORTANT!**
+
+Remember that you must be logged to customer tenant to deploy ARM template, not Managed Service Provider tenant.
 
 ## Things to have in mind before applying this solution
 1. Decide how you want to manage access to your customers. Do you want to have same groups for all of them or separate one?
