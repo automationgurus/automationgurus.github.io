@@ -330,6 +330,18 @@
   </li>
 
     
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-ligthouse-configuration.md" title="Azure Lighthouse configuration" class="md-nav__link">
+      Azure Lighthouse configuration
+    </a>
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -564,7 +576,7 @@ We believe that you can deploy and configure them without additional instruction
 <li><em>AzureDevOpsPersonalAccessToken</em> secret in AKV containing PAT value.</li>
 <li>Azure Log Analytics Workspace.</li>
 <li><em>Shared key read</em> permissions for ARA.</li>
-<li>Azure Automation Powershell <strong>SynchronizeAzureDevOpsAuditLogs</strong> Runbook (<a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">get it here</a>)</li>
+<li>Azure Automation Powershell <strong>SynchronizeAzureDevOpsAuditLogs</strong> Runbook (<a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">get it here</a>)</li>
 </ul>
 <h2 id="solution-overview-more-details">Solution overview. More details.</h2>
 <ol>
@@ -611,7 +623,7 @@ We believe that you can deploy and configure them without additional instruction
 </tbody>
 </table>
 <h2 id="powershell-runbook">Powershell Runbook</h2>
-<p><a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">Get SynchronizeAzureDevOpsAuditLogsRunbook Source Code</a></p>
+<p><a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/SynchronizeAzureDevOpsAuditLogsRunbook.ps1">Get SynchronizeAzureDevOpsAuditLogsRunbook Source Code</a></p>
 <p>We use <em>Build-Signature</em> and <em>Post-LogAnalyticsData</em> from 
 <a href="https://docs.microsoft.com/en-us/azure/azure-monitor/platform/data-collector-api">MS DOCS: Data collector api</a>
 . In this example, they use $TimeStampField variable that is global. It isn't good practice to use in function variables defined out of function scope. We replaced that.</p>

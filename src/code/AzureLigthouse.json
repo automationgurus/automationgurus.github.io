@@ -1,0 +1,30 @@
+"parameters": {
+    "mspOfferName": {
+        "value": ""	
+    },
+    "mspOfferDescription": {
+        "value": "" 
+    },
+    "managedByTenantId": {
+        "value": ""	
+    },
+    "authorizations": {
+        "value": [
+            {
+                "principalId": "000000-0000-00000-0000-0000000",
+                "principalIdDisplayName": "Logs Reader",
+                "roleDefinitionId": "73c42c96-874c-492b-b04d-ab87d138a893"
+            },
+            {
+                "principalId": "000000-0000-00000-0000-0000000",
+                "principalIdDisplayName": "Customer Reader",
+                "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+            },
+            {
+                "principalId": "000000-0000-00000-0000-0000000",
+                "principalIdDisplayName": "Customer Contributor",
+                "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+            }
+        ]
+    }
+}
