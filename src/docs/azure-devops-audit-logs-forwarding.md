@@ -1,43 +1,29 @@
 # Forward Azure DevOps Audit Logs to Log Analytics Workspace
 
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-000.jpg)
-
-## Real-world situation. It might happen to you.
-
-1. You've just discovered new extension installed.
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-007.jpg)
-
-2. You wonder who and when did install this AzSK Extension, so you ask Log Analytics.
-```
-AzureDevOps_CL 
-| sort by TimeGenerated desc nulls last 
-| where actionId_s == "Extension.Installed" 
-| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
-```
-|TimeGenerated| actionId_s|     scopeDisplayName_s|     details_s|      actorDisplayName_s|
-|-|-|-|-|-|
-|2020-03-15T16:47:19.367Z|      Extension.Installed|    AutomationGuyIO (Organization)| Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"|      Automation Guru
-
-
 ## Is Log Analytics Workspace clairvoyant?
 
-No it isn't! We developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.
+No it isn't! Therefore, we developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.
 
 
 ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-004.jpg)
 
-## Why should you read this article? What are the benefits?
 
-1. You don't want to browse logs though Azure DevOps web manually.
-1. You don't want to export audit logs to CSV and analyze them in Excel.
-1. You want to have **all audit logs in the same place**. It sounds like your regulator, doesn't it?
-1. You'll be able to **search effectively** across logs, using Kusto Query Language.
-1. You want to **keep** audit logs for more than 90 days.
-1. You'll easily bind ADO events to other events from another part of your environment.
-1. You'll Grab details about activities like permissions changes, deleted resources, branch policy changes.
-1. If you're **IaC enthusiastic**, then the majority of you work in ADO. It's worth to capture events from there.
 
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-002.jpg)
+
+## Let's start from demo.
+
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-001.jpg)
+
+1. Modify the branch policy and start to be suspicious.
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-008.jpg)
+
+2. Invoke synchronization manually or wait.
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-009.jpg)
+
+3. Check the results.
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-010.jpg)
+
+
 
 ## What is available out of the box?
 
@@ -286,15 +272,21 @@ $endpointUri += "&endTime=$( $endTime )"
 
 ## It's time to rest and check what we did
 
-1. Modify the branch policy and start to be suspicious.
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-008.jpg)
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-001.jpg)
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-000.jpg)
 
-2. Invoke synchronization manually or wait.
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-009.jpg)
+1. You've just discovered new extension installed.
+![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-007.jpg)
 
-3. Check the results.
-![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-010.jpg)
+2. You wonder who and when did install this AzSK Extension, so you ask Log Analytics.
+```
+AzureDevOps_CL 
+| sort by TimeGenerated desc nulls last 
+| where actionId_s == "Extension.Installed" 
+| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
+```
+|TimeGenerated| actionId_s|     scopeDisplayName_s|     details_s|      actorDisplayName_s|
+|-|-|-|-|-|
+|2020-03-15T16:47:19.367Z|      Extension.Installed|    AutomationGuyIO (Organization)| Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"|      Automation Guru
 
 ## Solution development insights
 
@@ -302,3 +294,10 @@ $endpointUri += "&endTime=$( $endTime )"
 - Storing LAW SharedKey in AKV is one of the options, but it'll force you to update it on change. We decided to get it directly during the script execution. 
 - We could use AAA encrypted value to store PAT, but in case of storing secrets, AKV should always be the primary choice. Other parameters we don't consider as secrets, so we store them in AAA variables.
 - Enabling *Allow trusted Microsoft services to bypass this firewall* in AKW Networking configuration didn't allow access from AAA. Therefore we set this setting to *Allow access from all networks*.
+
+## Visit also
+
+1. [Dominic Batstone's Blog: Export ADO Audit Logs and query them with LogParser ](https://dombat.co.uk/azure-devops-auditing/)
+
+1. [mohitgoyal.co: Working with Audit logs in Azure DevOps](https://mohitgoyal.co/2019/07/24/working-with-audit-logs-in-azure-devops/)
+
