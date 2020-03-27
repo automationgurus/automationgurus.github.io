@@ -1,9 +1,9 @@
 $Exceptions = @(
     'src',
     '.gitignore',
-    'CNAME',
+    # 'CNAME',
     'Clean-Root.ps1'
-    'site'
+    # 'site'
 )
 
 Get-ChildItem `

@@ -230,13 +230,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#real-world-situation-it-might-happen-to-you" class="md-nav__link">
-    Real-world situation. It might happen to you.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#is-log-analytics-workspace-clairvoyant" class="md-nav__link">
     Is Log Analytics Workspace clairvoyant?
   </a>
@@ -244,8 +237,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-should-you-read-this-article-what-are-the-benefits" class="md-nav__link">
-    Why should you read this article? What are the benefits?
+  <a href="#lets-start-from-demo" class="md-nav__link">
+    Let's start from demo.
   </a>
   
 </li>
@@ -309,6 +302,13 @@
         <li class="md-nav__item">
   <a href="#solution-development-insights" class="md-nav__link">
     Solution development insights
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visit-also" class="md-nav__link">
+    Visit also
   </a>
   
 </li>
@@ -336,7 +336,7 @@
 
 
   <li class="md-nav__item">
-    <a href="../azure-ligthouse-configuration.md" title="Azure Lighthouse configuration" class="md-nav__link">
+    <a href="../azure-lighthouse-configuration/" title="Azure Lighthouse configuration" class="md-nav__link">
       Azure Lighthouse configuration
     </a>
   </li>
@@ -363,13 +363,6 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#real-world-situation-it-might-happen-to-you" class="md-nav__link">
-    Real-world situation. It might happen to you.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#is-log-analytics-workspace-clairvoyant" class="md-nav__link">
     Is Log Analytics Workspace clairvoyant?
   </a>
@@ -377,8 +370,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#why-should-you-read-this-article-what-are-the-benefits" class="md-nav__link">
-    Why should you read this article? What are the benefits?
+  <a href="#lets-start-from-demo" class="md-nav__link">
+    Let's start from demo.
   </a>
   
 </li>
@@ -442,6 +435,13 @@
         <li class="md-nav__item">
   <a href="#solution-development-insights" class="md-nav__link">
     Solution development insights
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visit-also" class="md-nav__link">
+    Visit also
   </a>
   
 </li>
@@ -470,59 +470,25 @@
                 
                 
                 <h1 id="forward-azure-devops-audit-logs-to-log-analytics-workspace">Forward Azure DevOps Audit Logs to Log Analytics Workspace</h1>
-<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-000.jpg" /></p>
-<h2 id="real-world-situation-it-might-happen-to-you">Real-world situation. It might happen to you.</h2>
-<ol>
-<li>
-<p>You've just discovered new extension installed.
-<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-007.jpg" /></p>
-</li>
-<li>
-<p>You wonder who and when did install this AzSK Extension, so you ask Log Analytics.</p>
-</li>
-</ol>
-<div class="codehilite"><pre><span></span><code>AzureDevOps_CL 
-| sort by TimeGenerated desc nulls last 
-| where actionId_s == &quot;Extension.Installed&quot; 
-| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
-</code></pre></div>
-
-
-<table>
-<thead>
-<tr>
-<th>TimeGenerated</th>
-<th>actionId_s</th>
-<th>scopeDisplayName_s</th>
-<th>details_s</th>
-<th>actorDisplayName_s</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2020-03-15T16:47:19.367Z</td>
-<td>Extension.Installed</td>
-<td>AutomationGuyIO (Organization)</td>
-<td>Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"</td>
-<td>Automation Guru</td>
-</tr>
-</tbody>
-</table>
 <h2 id="is-log-analytics-workspace-clairvoyant">Is Log Analytics Workspace clairvoyant?</h2>
-<p>No it isn't! We developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.</p>
+<p>No it isn't! Therefore, we developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.</p>
 <p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-004.jpg" /></p>
-<h2 id="why-should-you-read-this-article-what-are-the-benefits">Why should you read this article? What are the benefits?</h2>
+<h2 id="lets-start-from-demo">Let's start from demo.</h2>
+<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-001.jpg" /></p>
 <ol>
-<li>You don't want to browse logs though Azure DevOps web manually.</li>
-<li>You don't want to export audit logs to CSV and analyze them in Excel.</li>
-<li>You want to have <strong>all audit logs in the same place</strong>. It sounds like your regulator, doesn't it?</li>
-<li>You'll be able to <strong>search effectively</strong> across logs, using Kusto Query Language.</li>
-<li>You want to <strong>keep</strong> audit logs for more than 90 days.</li>
-<li>You'll easily bind ADO events to other events from another part of your environment.</li>
-<li>You'll Grab details about activities like permissions changes, deleted resources, branch policy changes.</li>
-<li>If you're <strong>IaC enthusiastic</strong>, then the majority of you work in ADO. It's worth to capture events from there.</li>
+<li>
+<p>Modify the branch policy and start to be suspicious.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-008.jpg" /></p>
+</li>
+<li>
+<p>Invoke synchronization manually or wait.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-009.jpg" /></p>
+</li>
+<li>
+<p>Check the results.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-010.jpg" /></p>
+</li>
 </ol>
-<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-002.jpg" /></p>
 <h2 id="what-is-available-out-of-the-box">What is available out of the box?</h2>
 <!-- ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-005.jpg) -->
 
@@ -791,21 +757,43 @@ Get LAW SharedKey (it's required to invoke API calls)
 ### -->
 
 <h2 id="its-time-to-rest-and-check-what-we-did">It's time to rest and check what we did</h2>
+<p><img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-000.jpg" /></p>
 <ol>
 <li>
-<p>Modify the branch policy and start to be suspicious.
-<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-008.jpg" />
-<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-001.jpg" /></p>
+<p>You've just discovered new extension installed.
+<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-007.jpg" /></p>
 </li>
 <li>
-<p>Invoke synchronization manually or wait.
-<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-009.jpg" /></p>
-</li>
-<li>
-<p>Check the results.
-<img alt="Stream audit logs from Azure DevOps to Log Analytics Workspace" src="../img/azure-devops-audit-logs-forwarding-010.jpg" /></p>
+<p>You wonder who and when did install this AzSK Extension, so you ask Log Analytics.</p>
 </li>
 </ol>
+<div class="codehilite"><pre><span></span><code>AzureDevOps_CL 
+| sort by TimeGenerated desc nulls last 
+| where actionId_s == &quot;Extension.Installed&quot; 
+| project  TimeGenerated, actionId_s, scopeDisplayName_s , details_s, actorDisplayName_s 
+</code></pre></div>
+
+
+<table>
+<thead>
+<tr>
+<th>TimeGenerated</th>
+<th>actionId_s</th>
+<th>scopeDisplayName_s</th>
+<th>details_s</th>
+<th>actorDisplayName_s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2020-03-15T16:47:19.367Z</td>
+<td>Extension.Installed</td>
+<td>AutomationGuyIO (Organization)</td>
+<td>Extension "Secure DevOps Kit (AzSK) CICD Extensions for Azure" from publisher "Microsoft DevLabs" was installed - Version "3.1.7"</td>
+<td>Automation Guru</td>
+</tr>
+</tbody>
+</table>
 <h2 id="solution-development-insights">Solution development insights</h2>
 <ul>
 <li>ARA becomes a Contributor by default. Consider changing that.</li>
@@ -813,6 +801,15 @@ Get LAW SharedKey (it's required to invoke API calls)
 <li>We could use AAA encrypted value to store PAT, but in case of storing secrets, AKV should always be the primary choice. Other parameters we don't consider as secrets, so we store them in AAA variables.</li>
 <li>Enabling <em>Allow trusted Microsoft services to bypass this firewall</em> in AKW Networking configuration didn't allow access from AAA. Therefore we set this setting to <em>Allow access from all networks</em>.</li>
 </ul>
+<h2 id="visit-also">Visit also</h2>
+<ol>
+<li>
+<p><a href="https://dombat.co.uk/azure-devops-auditing/">Dominic Batstone's Blog: Export ADO Audit Logs and query them with LogParser </a></p>
+</li>
+<li>
+<p><a href="https://mohitgoyal.co/2019/07/24/working-with-audit-logs-in-azure-devops/">mohitgoyal.co: Working with Audit logs in Azure DevOps</a></p>
+</li>
+</ol>
                 
                   
                 
@@ -846,6 +843,27 @@ Get LAW SharedKey (it's required to invoke API calls)
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="../azure-lighthouse-configuration/" title="Azure Lighthouse configuration" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                Azure Lighthouse configuration
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
