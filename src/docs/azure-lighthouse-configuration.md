@@ -89,12 +89,12 @@ foreach ($group in $groups) {
 }
 ```
 
-Here you can find short description of each parameter in ARM
+Here you can find short description of each parameter in ARM:
 
-- **mspOfferName** - name of the offer from the Managed Service Provider
-- **mspOfferDescription** - name of the Managed Service Provider offering
-- **managedByTenantId** - Managed Service Provider tenant ID
-- **authorizations** - in this part you should provide array according to how you want to configure access in Azure Lighthouse. 
+* **mspOfferName** - name of the offer from the Managed Service Provider
+* **mspOfferDescription** - name of the Managed Service Provider offering
+* **managedByTenantId** - Managed Service Provider tenant ID
+* **authorizations** - in this part you should provide array according to how you want to configure access in Azure Lighthouse. 
 
 ```ARM
 "parameters": {
