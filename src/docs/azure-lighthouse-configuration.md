@@ -90,6 +90,7 @@ foreach ($group in $groups) {
 ```
 
 Here you can find short description of each parameter in ARM
+
 - **mspOfferName** - name of the offer from the Managed Service Provider
 - **mspOfferDescription** - name of the Managed Service Provider offering
 - **managedByTenantId** - Managed Service Provider tenant ID
