@@ -3,6 +3,7 @@ $Exceptions = @(
     '.gitignore',
     # 'CNAME',
     'Clean-Root.ps1'
+    'Publish-Docs.ps1'
     # 'site'
 )
 
@@ -13,6 +14,10 @@ Get-ChildItem `
 Set-Location -Path .\src\
 
 mkdocs build -d ..\site\ -c
+cd ..
+
+Copy-Item  -Path .\site\* -Recurse -Force
+Remove-Item .\site -Recurse -Force
 
 # Set-Location -Path ..
 # copy-ite

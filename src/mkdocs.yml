@@ -21,8 +21,8 @@ theme:
 nav:
     # - About: 'index.md'
     - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
-    - Azure Lighthouse configuration: 'azure-lighthouse-configuration.md'
-    # - Azure Subscription With Selenium: 'powershell-selenium-azure-subscription'
+    - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
+    - Powershell Web-Based Automation: 'powershell-web-browser-automation.md'
     
     # - 'User Guide':
     #     - 'Writing your docs': 'writing-your-docs.md'
