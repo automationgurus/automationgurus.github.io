@@ -46,8 +46,7 @@ To check role defintion ID use Powershell command
 ```
 
 To check Azure Active Directory group ID use Powershell command
-```powershell
-Connect-AzureAD
+```power
 (Get-AzADGroup -Name "Name_of_the_AAD_group").ObjectId
 ```
 
