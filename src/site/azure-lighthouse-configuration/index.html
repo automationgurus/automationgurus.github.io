@@ -452,8 +452,7 @@
 
 
 <p>To check Azure Active Directory group ID use Powershell command</p>
-<div class="codehilite"><pre><span></span><code><span class="nb">Connect-AzureAD</span>
-<span class="p">(</span><span class="nb">Get-AzADGroup</span> <span class="n">-Name</span> <span class="s2">&quot;Name_of_the_AAD_group&quot;</span><span class="p">).</span><span class="n">ObjectId</span>
+<div class="codehilite"><pre><span></span><code>(Get-AzADGroup -Name &quot;Name_of_the_AAD_group&quot;).ObjectId
 </code></pre></div>
 
 
@@ -495,7 +494,7 @@
 </code></pre></div>
 
 
-<p>Here you can find short description of each parameter in ARM</p>
+<p>Here you can find short description of each parameter in ARM:</p>
 <ul>
 <li><strong>mspOfferName</strong> - name of the offer from the Managed Service Provider</li>
 <li><strong>mspOfferDescription</strong> - name of the Managed Service Provider offering</li>
