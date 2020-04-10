@@ -1,39 +1,3 @@
-# Copy Azure database between stages
-
-![Azure Copy databases](img/copy-database-between-stages-000.jpg)
-
-Goal of this article is to show you how to easily migrate database between two Azure SQL Servers.
-It can be usefull in scenarios where you need to have exact configuration on two environments and want to have it done in automatic way. However you should bear in mind that for big size databases process of migration can take quite long.
-
-## What services are needed to have solution working properly?
-
-The only service which is mandatory (besides two Azure SQL Servers) is Azure Storage Account, on which bacpac files will be stored. It's up to you how you will configure this storage, as there aren't any specific requirement. 
-
-## How the process of migration looks like?
-
-As you probably saw on main picture of this article the process is quite easy:
-
-1. Script initialize connection to source database.
-2. Script is starting export of bacpac file from source database to storage account.
-3. Script checks if bacpac was properly created.
-4. Script is starting import of bacpac file to destination database from storage account.
-5. Script validate if process of importing bacpac file finished with success.
-
-## Prerequisites
-
-1. Az module installed on platform on which script will be run (eg. your local PC, Azure DevOps pipeline, Azure Automation)
-```powershell
-Install-Module -Name Az -Force
-```
-2. Firewall rule added on SQL Server (if you are using local PC) or option "Allow Azure services and resources to access this server" in case you use some other Azure service to run the script.
-![SQL Server firewall](img/copy-database-between-stages-001.jpg)
-3. Blob container called "bacpacs" created on storage account.
-4. Account/Service Prinicipal under which script will work should have proper permission (Contributor) assigned to storage account.
-
-### Script:
-[Copy database between stages Source Code](https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/Copy-AzSqlDatabase.ps1)
-
-```powershell
 param(
     $sourceSqlUser,
     $sourceSubscriptionID,
@@ -123,9 +87,3 @@ if ($exportStatus.Status -eq "Succeeded") {
 else {
     Write-Output "Export of database $destinationSqlDatabaseName from SQL server $destinationSqlServerName failed. Error: $($exportStatus.StatusMessage)"
 }
-```
-
-## Things to have in mind before applying this solution
-1. Script will automatically remove database in the destination if it already exist, ensure that it can be done before running script.
-2. Check if database can be copied to different SQL server as it can contain some data which are sensitive and should be used only in specific environment.
-3. Ensure that provided secrets names are created and you have proper access policy configured for you account/service principal.
