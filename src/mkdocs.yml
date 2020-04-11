@@ -23,6 +23,8 @@ nav:
     - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
     - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
     - Powershell Web-Based Automation: 'powershell-web-browser-automation.md'
+    - Copy Azure database between stages: 'copy-database-between-stages.md'
+
     
     # - 'User Guide':
     #     - 'Writing your docs': 'writing-your-docs.md'
