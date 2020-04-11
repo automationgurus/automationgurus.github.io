@@ -126,6 +126,6 @@ else {
 ```
 
 ## Things to have in mind before applying this solution
-1. Script will automatically remove database in the destination if it already exist, ensure that it can be done before running script.
+1. **Script will automatically remove database in the destination if it already exist, ensure that it can be done before running script.**
 2. Check if database can be copied to different SQL server as it can contain some data which are sensitive and should be used only in specific environment.
 3. Ensure that provided secrets names are created and you have proper access policy configured for you account/service principal.
