@@ -1,5 +1,7 @@
 site_name: Automation Bible #by A.Brodziński & K.Więcek
 
+site_url: https://automate.guru/
+
 pages:
   - Home: 'azure-devops-audit-logs-forwarding.md'
   # - Home: 'test.md'
