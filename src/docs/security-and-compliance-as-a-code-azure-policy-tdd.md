@@ -1,4 +1,4 @@
-# Azure Policy Test Driven Development
+# Security and Compliance as a Code: Azure Policy TDD
 
 | Tag Name | Required? | Description | Example Value |
 | - | - | - | - |
