@@ -16,8 +16,8 @@ Set-Location -Path .\src\
 mkdocs build -d ..\site\ -c
 cd ..
 
-Copy-Item  -Path .\site\* -Recurse -Force
-Remove-Item .\src\site -Recurse -Force
+Copy-Item  -Path .\site\* -Recurse -Force 
+Remove-Item .\site -Recurse -Force
 
 # Set-Location -Path ..
 # copy-ite
