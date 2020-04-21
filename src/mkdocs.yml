@@ -26,7 +26,8 @@ nav:
     - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
     - Powershell Web-Based Automation: 'powershell-web-browser-automation.md'
     - Copy Azure database between stages: 'copy-database-between-stages.md'
-    - 'Security And Compliance As A Code Azure Policy TDD': 'security-and-compliance-as-a-code-azure-policy-tdd.md' 
+    - 'Security And Compliance As A Code Azure Policy TDD': 'security-and-compliance-as-a-code-azure-policy-tdd.md'
+    - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
     
     # - 'User Guide':
     #     - 'Writing your docs': 'writing-your-docs.md'
