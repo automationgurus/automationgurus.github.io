@@ -1,6 +1,6 @@
 # Multi-Stage YAML Pipeline Configuration
 
-![Multi-Stage YAML pipeline]()
+![Multi-Stage YAML result](img/multi-stage-yaml-pipeline-configuration-009.jpg)
 
 Since May 2019 Microsoft offer as a part of Azure DevOps service Multi-Stage YAML pipelines.
 Probably you will ask what is a difference between standard approach of CICD process and Multi-Stage?
@@ -28,8 +28,6 @@ If I didn't encourage you yet to using this funcionality, below you can find mor
 
 If you think it is problem you are totally wrong.
 YAML is not complicated - if you ever define Azure resource definition using Azure Resource Manager (ARM template) you will for sure be able to easily write YAML pipelines.
-
-<PICTURE OF YAML>
 
 ## How to get started with Multi-Stage YAML pipelines?
 
