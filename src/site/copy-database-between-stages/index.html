@@ -1,0 +1,619 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+        <link rel="canonical" href="https://automate.guru/copy-database-between-stages/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Copy Azure database between stages - Automation Bible</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Ubuntu Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-160963982-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#copy-azure-database-between-stages" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://automate.guru/" title="Automation Bible" aria-label="Automation Bible" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Automation Bible
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Copy Azure database between stages
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://automate.guru/" title="Automation Bible" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Automation Bible
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-devops-audit-logs-forwarding/" title="Azure DevOps Audit Logs Forwarder" class="md-nav__link">
+      Azure DevOps Audit Logs Forwarder
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-lighthouse-configuration/" title="Azure Lighthouse Configuration" class="md-nav__link">
+      Azure Lighthouse Configuration
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../powershell-web-browser-automation/" title="Powershell Web-Based Automation" class="md-nav__link">
+      Powershell Web-Based Automation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Copy Azure database between stages
+      </label>
+    
+    <a href="./" title="Copy Azure database between stages" class="md-nav__link md-nav__link--active">
+      Copy Azure database between stages
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-services-are-needed-to-have-solution-working-properly" class="md-nav__link">
+    What services are needed to have solution working properly?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-process-of-migration-looks-like" class="md-nav__link">
+    How the process of migration looks like?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    Script:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-have-in-mind-before-applying-this-solution" class="md-nav__link">
+    Things to have in mind before applying this solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-services-are-needed-to-have-solution-working-properly" class="md-nav__link">
+    What services are needed to have solution working properly?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-the-process-of-migration-looks-like" class="md-nav__link">
+    How the process of migration looks like?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#script" class="md-nav__link">
+    Script:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#things-to-have-in-mind-before-applying-this-solution" class="md-nav__link">
+    Things to have in mind before applying this solution
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="copy-azure-database-between-stages">Copy Azure database between stages</h1>
+<p><img alt="Azure Copy databases" src="../img/copy-database-between-stages-000.jpg" /></p>
+<p>Goal of this article is to show you how to easily migrate database between two Azure SQL Servers.
+It can be usefull in scenarios where you need to have exact configuration on two environments and want to have it done in automatic way. However you should bear in mind that for big size databases process of migration can take quite long.</p>
+<h2 id="what-services-are-needed-to-have-solution-working-properly">What services are needed to have solution working properly?</h2>
+<p>The only service which is mandatory (besides two Azure SQL Servers) is Azure Storage Account, on which bacpac files will be stored. It's up to you how you will configure this storage, as there aren't any specific requirement. </p>
+<h2 id="how-the-process-of-migration-looks-like">How the process of migration looks like?</h2>
+<p>As you probably saw on main picture of this article the process is quite easy:</p>
+<ol>
+<li>Script initialize connection to source database.</li>
+<li>Script is starting export of bacpac file from source database to storage account.</li>
+<li>Script checks if bacpac was properly created.</li>
+<li>Script is starting import of bacpac file to destination database from storage account.</li>
+<li>Script validate if process of importing bacpac file finished with success.</li>
+</ol>
+<h2 id="prerequisites">Prerequisites</h2>
+<ol>
+<li>Az module installed on platform on which script will be run (eg. your local PC, Azure DevOps pipeline, Azure Automation)</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">Install-Module</span> <span class="n">-Name</span> <span class="n">Az</span> <span class="n">-Force</span>
+</code></pre></div>
+
+
+<ol>
+<li>Firewall rule added on SQL Server (if you are using local PC) or option "Allow Azure services and resources to access this server" in case you use some other Azure service to run the script.
+<img alt="SQL Server firewall" src="../img/copy-database-between-stages-001.jpg" /></li>
+<li>Blob container called "bacpacs" created on storage account.</li>
+<li>Account/Service Prinicipal under which script will work should have proper permission (Contributor) assigned to storage account.</li>
+</ol>
+<h3 id="script">Script:</h3>
+<p><a href="https://github.com/automationgurus/automationgurus.github.io/blob/master/src/code/Copy-AzSqlDatabase.ps1">Copy database between stages Source Code</a></p>
+<div class="codehilite"><pre><span></span><code><span class="k">param</span><span class="p">(</span>
+    <span class="nv">$sourceSqlUser</span><span class="p">,</span>
+    <span class="nv">$sourceSubscriptionID</span><span class="p">,</span>
+    <span class="nv">$sourceSqlServerResourceGroup</span><span class="p">,</span>
+    <span class="nv">$sourceSqlServerName</span><span class="p">,</span>
+    <span class="nv">$sourceSqlDatabaseName</span><span class="p">,</span>
+    <span class="nv">$destinationDatabaseEdition</span><span class="p">,</span>
+    <span class="nv">$destinationServiceObjectiveName</span><span class="p">,</span>
+    <span class="nv">$destinationDatabaseMaxSizeBytes</span><span class="p">,</span>
+    <span class="nv">$destinationSqlUser</span><span class="p">,</span>
+    <span class="nv">$destinationSubscriptionID</span><span class="p">,</span>
+    <span class="nv">$destinationSqlServerResourceGroup</span><span class="p">,</span>
+    <span class="nv">$destinationSqlServerName</span><span class="p">,</span>
+    <span class="nv">$destinationSqlDatabaseName</span><span class="p">,</span>
+    <span class="nv">$commonSubscriptionId</span><span class="p">,</span>
+    <span class="nv">$storageAccountName</span><span class="p">,</span>
+    <span class="nv">$storageAccountResourceGroup</span><span class="p">,</span>
+    <span class="nv">$keyVaultName</span><span class="p">,</span>
+    <span class="nv">$sqlServerSourceKeyVaultEntry</span><span class="p">,</span>
+    <span class="nv">$sqlServerDestinationKeyVaultEntry</span><span class="p">,</span>
+    <span class="nv">$tenantId</span>
+<span class="p">)</span>
+
+<span class="nb">Connect-AzAccount</span> <span class="n">-TenantId</span> <span class="nv">$tenantId</span>
+
+<span class="nb">Select-AzSubscription</span> <span class="n">-SubscriptionId</span> <span class="nv">$commonSubscriptionID</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="nv">$blobUrl</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzStorageAccount</span> <span class="n">-ResourceGroupName</span> <span class="nv">$storageAccountResourceGroup</span> <span class="n">-Name</span> <span class="nv">$storageAccountName</span> <span class="p">|</span> <span class="nb">Select-Object</span> <span class="p">*).</span><span class="n">Context</span><span class="p">.</span><span class="n">BlobEndpoint</span>
+<span class="nv">$storageAccountKey</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzStorageAccountKey</span> <span class="n">-ResourceGroupName</span> <span class="nv">$storageAccountResourceGroup</span> <span class="n">-Name</span> <span class="nv">$storageAccountName</span><span class="p">)[</span><span class="n">0</span><span class="p">].</span><span class="n">Value</span>
+<span class="nv">$sourceSqlServerPassword</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzKeyVaultSecret</span> <span class="n">-VaultName</span> <span class="nv">$keyVaultName</span> <span class="n">-Name</span> <span class="nv">$sqlServerSourceKeyVaultEntry</span><span class="p">).</span><span class="n">SecretValue</span>
+<span class="nv">$destinationSqlServerPassword</span> <span class="p">=</span> <span class="p">(</span><span class="nb">Get-AzKeyVaultSecret</span> <span class="n">-VaultName</span> <span class="nv">$KeyVaultName</span> <span class="n">-Name</span> <span class="nv">$sqlServerDestinationKeyVaultEntry</span><span class="p">).</span><span class="n">SecretValue</span>
+
+
+<span class="nb">Select-AzSubscription</span> <span class="n">-SubscriptionId</span> <span class="nv">$sourceSubscriptionID</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+<span class="k">Try</span> <span class="p">{</span>
+    <span class="nb">Get-AzSqlDatabase</span> <span class="n">-DatabaseName</span> <span class="nv">$sourceSqlDatabaseName</span> <span class="n">-ServerName</span> <span class="nv">$sourceSqlServerName</span> <span class="n">-ResourceGroupName</span> <span class="nv">$sourceSqlServerResourceGroup</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Found $sourceSqlDatabaseName database on SQL Server $sourceSqlServerName&quot;</span>
+<span class="p">}</span>
+<span class="k">Catch</span> <span class="p">{</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Database $sourceSqlDatabaseName can not be found on SQL Server $sourceSqlServerName&quot;</span>
+    <span class="n">exit</span>
+<span class="p">}</span>
+
+<span class="nv">$date</span> <span class="p">=</span> <span class="nb">Get-Date</span> <span class="n">-Format</span> <span class="n">yyyyMMdd</span>
+<span class="nv">$url</span> <span class="p">=</span> <span class="nv">$blobUrl</span> <span class="p">+</span> <span class="s2">&quot;bacpacs/$sourceSqlDatabaseName_$date.bacpac&quot;</span>
+
+<span class="nv">$exportRequest</span> <span class="p">=</span> <span class="nb">New-AzSqlDatabaseExport</span> <span class="n">-DatabaseName</span> <span class="nv">$sourceSqlDatabaseName</span> <span class="n">-ResourceGroupName</span> <span class="nv">$sourceSqlServerResourceGroup</span> <span class="n">-ServerName</span> <span class="nv">$sourceSqlServerName</span> <span class="n">-StorageKeyType</span> <span class="s2">&quot;StorageAccessKey&quot;</span> <span class="n">-StorageUri</span> <span class="nv">$url</span> <span class="n">-StorageKey</span> <span class="nv">$shdStorageAccountKey</span> <span class="n">-AdministratorLogin</span> <span class="nv">$sourceSqlUser</span> <span class="n">-AdministratorLoginPassword</span> <span class="nv">$sourceSqlServerPassword</span>
+<span class="nv">$exportStatus</span> <span class="p">=</span> <span class="nb">Get-AzSqlDatabaseImportExportStatus</span> <span class="n">-OperationStatusLink</span> <span class="nv">$exportRequest</span><span class="p">.</span><span class="n">OperationStatusLink</span>
+<span class="nb">Write-Output</span> <span class="s2">&quot;Exporting database $sourceSqlDatabaseName to bacpac file&quot;</span>
+<span class="k">while</span> <span class="p">(</span><span class="nv">$exportStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;InProgress&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Start-Sleep</span> <span class="n">-s</span> <span class="n">10</span>
+    <span class="nv">$exportStatus</span> <span class="p">=</span> <span class="nb">Get-AzSqlDatabaseImportExportStatus</span> <span class="n">-OperationStatusLink</span> <span class="nv">$exportRequest</span><span class="p">.</span><span class="n">OperationStatusLink</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Exporting...&quot;</span>
+<span class="p">}</span>
+
+<span class="nb">Write-Output</span> <span class="s2">&quot;Proceeding with destination database...&quot;</span>
+<span class="nb">Select-AzSubscription</span> <span class="n">-SubscriptionId</span> <span class="nv">$destinationSubscriptionID</span> <span class="p">|</span> <span class="nb">Out-Null</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nv">$exportStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Database $sourceSqlDatabaseName export to bacpac file finished with success.&quot;</span>
+    <span class="nv">$targetDatabase</span> <span class="p">=</span> <span class="nb">Get-AzSqlDatabase</span> <span class="n">-DatabaseName</span> <span class="nv">$destinationSqlDatabaseName</span> <span class="n">-ResourceGroupName</span> <span class="nv">$destinationSqlServerResourceGroup</span> <span class="n">-ServerName</span> <span class="nv">$destinationSqlServerName</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$targetDatabase</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">Try</span> <span class="p">{</span>
+            <span class="nb">Write-Output</span> <span class="s2">&quot;Removing database $destinationSqlDatabaseName on target server as it already exist.&quot;</span>
+            <span class="nb">Remove-AzSqlDatabase</span> <span class="n">-DatabaseName</span> <span class="nv">$destinationSqlDatabaseName</span> <span class="n">-ResourceGroupName</span> <span class="nv">$destinationSqlServerResourceGroup</span> <span class="n">-ServerName</span> <span class="nv">$destinationSqlServerName</span>
+            <span class="nb">Write-Output</span> <span class="s2">&quot;Database $destinationSqlDatabaseName removal finished with success&quot;</span>
+        <span class="p">}</span>
+        <span class="k">Catch</span> <span class="p">{</span>
+            <span class="nb">Write-Output</span> <span class="s2">&quot;Unexpected error occured during removal of database $destinationSqlDatabaseName from server $destinationSqlServerName . Error: </span><span class="p">$(</span><span class="nv">$_</span><span class="p">.</span><span class="n">Exception</span><span class="p">.</span><span class="n">Message</span><span class="p">)</span><span class="s2">&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nv">$importRequest</span> <span class="p">=</span> <span class="nb">New-AzSqlDatabaseImport</span> <span class="n">-DatabaseName</span> <span class="nv">$destinationSqlDatabaseName</span> <span class="n">-ResourceGroupName</span> <span class="nv">$destinationSqlServerResourceGroup</span><span class="n">-ServerName</span> <span class="nv">$destinationSqlServerName</span> <span class="n">-StorageKeyType</span> <span class="s2">&quot;StorageAccessKey&quot;</span> <span class="n">-StorageUri</span> <span class="nv">$url</span> <span class="n">-StorageKey</span> <span class="nv">$storageAccountKey</span> <span class="n">-AdministratorLogin</span> <span class="nv">$destinationSqlUser</span> <span class="n">-AdministratorLoginPassword</span> <span class="nv">$destinationSqlServerPassword</span> <span class="n">-Edition</span> <span class="nv">$destinationDatabaseEdition</span> <span class="n">-ServiceObjectiveName</span> <span class="nv">$destinationServiceObjectiveName</span> <span class="n">-DatabaseMaxSizeBytes</span> <span class="nv">$destinationDatabaseMaxSizeBytes</span>
+    <span class="nv">$importStatus</span> <span class="p">=</span> <span class="nb">Get-AzSqlDatabaseImportExportStatus</span> <span class="n">-OperationStatusLink</span> <span class="nv">$importRequest</span><span class="p">.</span><span class="n">OperationStatusLink</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Importing database $destinationSqlDatabaseName from bacpac file&quot;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="nv">$importStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;InProgress&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Start-Sleep</span> <span class="n">-s</span> <span class="n">10</span>
+        <span class="nv">$importStatus</span> <span class="p">=</span> <span class="nb">Get-AzSqlDatabaseImportExportStatus</span> <span class="n">-OperationStatusLink</span> <span class="nv">$importRequest</span><span class="p">.</span><span class="n">OperationStatusLink</span>
+        <span class="nb">Write-Output</span> <span class="s2">&quot;Importing...&quot;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nv">$importStatus</span><span class="p">.</span><span class="n">Status</span> <span class="o">-eq</span> <span class="s2">&quot;Succeeded&quot;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nb">Write-Output</span> <span class="s2">&quot;Database $destinationSqlDatabaseName import finished with success.&quot;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="nb">Write-Output</span> <span class="s2">&quot;Import of database $destinationSqlDatabaseName to SQL server $destinationSqlServerName failed. Error: </span><span class="p">$(</span><span class="nv">$importStatus</span><span class="p">.</span><span class="n">StatusMessage</span><span class="p">)</span><span class="s2">&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">else</span> <span class="p">{</span>
+    <span class="nb">Write-Output</span> <span class="s2">&quot;Export of database $destinationSqlDatabaseName from SQL server $destinationSqlServerName failed. Error: </span><span class="p">$(</span><span class="nv">$exportStatus</span><span class="p">.</span><span class="n">StatusMessage</span><span class="p">)</span><span class="s2">&quot;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h2 id="things-to-have-in-mind-before-applying-this-solution">Things to have in mind before applying this solution</h2>
+<ol>
+<li><strong>Script will automatically remove database in the destination if it already exist, ensure that it can be done before running script.</strong></li>
+<li>Check if database can be copied to different SQL server as it can contain some data which are sensitive and should be used only in specific environment.</li>
+<li>Ensure that provided secrets names are created and you have proper access policy configured for you account/service principal.</li>
+</ol>
+                
+                  
+                
+                
+              
+              
+                
+
+
+  <h2 id="__comments">Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://automate.guru/copy-database-between-stages/";
+      this.page.identifier =
+        "copy-database-between-stages/";
+    };
+    (function() {
+      var d = document, s = d.createElement("script");
+      s.src = "//automate-guru.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../powershell-web-browser-automation/" title="Powershell Web-Based Automation" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Powershell Web-Based Automation
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>
