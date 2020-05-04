@@ -1,0 +1,667 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="Automated Azure Policy Continous Inspection process implementation with Azure Devops.">
+      
+      
+        <link rel="canonical" href="https://automate.guru/azure-policy-continous-integration/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Continous Inspection For Azure Policy - Automation Bible</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Ubuntu Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-160963982-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#security-and-compliance-as-a-code-azure-policy-continous-inspection" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://automate.guru/" title="Automation Bible" aria-label="Automation Bible" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Automation Bible
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Continous Inspection For Azure Policy
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://automate.guru/" title="Automation Bible" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Automation Bible
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-devops-audit-logs-forwarding/" title="Azure DevOps Audit Logs Forwarder" class="md-nav__link">
+      Azure DevOps Audit Logs Forwarder
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-lighthouse-configuration/" title="Azure Lighthouse Configuration" class="md-nav__link">
+      Azure Lighthouse Configuration
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../powershell-web-browser-automation/" title="Powershell Web-Based Automation" class="md-nav__link">
+      Powershell Web-Based Automation
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../copy-database-between-stages/" title="Copy Azure database between stages" class="md-nav__link">
+      Copy Azure database between stages
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../security-and-compliance-as-a-code-azure-policy-tdd/" title="Security And Compliance As A Code Azure Policy TDD" class="md-nav__link">
+      Security And Compliance As A Code Azure Policy TDD
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../multi-stage-yaml-pipeline-configuration/" title="Multi-Stage YAML Pipeline Configuration" class="md-nav__link">
+      Multi-Stage YAML Pipeline Configuration
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Continous Inspection For Azure Policy
+      </label>
+    
+    <a href="./" title="Continous Inspection For Azure Policy" class="md-nav__link md-nav__link--active">
+      Continous Inspection For Azure Policy
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-most-important-question-always-is-why" class="md-nav__link">
+    The most important question always is why!
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-next-part-of-this-short-compliance-as-a-code-series-will-be-about-more-advanced-techniques-related-to-azure-policy-development" class="md-nav__link">
+    The next part of this short Compliance as a Code series will be about more advanced techniques related to Azure Policy development.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-this-article-is-a-must-for-you" class="md-nav__link">
+    Reading this article is a must for you...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-will-this-process-look-like-finally" class="md-nav__link">
+    How will this process look like finally?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-cannot-be-completed-if-any-test-has-failed" class="md-nav__link">
+    PR cannot be completed if any test has failed.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-are-you" class="md-nav__link">
+    Who are you?
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-most-important-question-always-is-why" class="md-nav__link">
+    The most important question always is why!
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-next-part-of-this-short-compliance-as-a-code-series-will-be-about-more-advanced-techniques-related-to-azure-policy-development" class="md-nav__link">
+    The next part of this short Compliance as a Code series will be about more advanced techniques related to Azure Policy development.
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reading-this-article-is-a-must-for-you" class="md-nav__link">
+    Reading this article is a must for you...
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-will-this-process-look-like-finally" class="md-nav__link">
+    How will this process look like finally?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pr-cannot-be-completed-if-any-test-has-failed" class="md-nav__link">
+    PR cannot be completed if any test has failed.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-are-you" class="md-nav__link">
+    Who are you?
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="security-and-compliance-as-a-code-azure-policy-continous-inspection">Security and Compliance as a Code: Azure Policy Continous Inspection</h1>
+<p><img alt="Azure Policy Test Results" src="../img/azure-policy-continous-integration-000.jpg" /></p>
+<p>In this blog entry, we will show you how to integrate <strong>automated Azure Policy tests</strong> with your <strong>DevOps process</strong>. 
+Automated Azure Policy deployment, invoking automated Pester test, and publish <strong>tests report</strong> will be <strong>part of</strong> your <strong>pull request</strong> process. 
+These steps will be performed in the <strong>sandbox</strong> so that it will be <strong>safe</strong> for the rest of your environment. </p>
+<p>After completing the steps described in this and last article, you will have everything ready to start writing Azure Policy without the need to perform many manual tests.</p>
+<h2 id="the-most-important-question-always-is-why">The most important question always is why!</h2>
+<p>In <a href="https://automate.guru/security-and-compliance-as-a-code-azure-policy-tdd/">one of the previous articles</a>, we presented Pester as a tool used for test-driven development of Azure Policy. You might find it <strong>overkill</strong> to achieve <strong>test-driven development</strong> for <strong>Azure Policy</strong>. <strong>We agree</strong> that <strong>usually</strong>, it will not be required to write tests. You will also find out scenario details there.</p>
+<!-- Azure Policy Built-in capabilities for **string validation** are limited. If you want to guarantee **tag value** level **compliance**, you must use ARM functions in your policies.  -->
+
+<p>The current state of the art is that we have some <strong>complex requirements</strong> regarding tag values. We have to validate tag values (<strong>emails</strong>, <strong>dates</strong>, <strong>multiple values separated by a slash</strong>). It is not that easy to satisfy them without using <strong>ARM function</strong> logics <strong>inside Azure Policy</strong>. </p>
+<h3 id="the-next-part-of-this-short-compliance-as-a-code-series-will-be-about-more-advanced-techniques-related-to-azure-policy-development">The next part of this short Compliance as a Code series will be about more advanced techniques related to Azure Policy development.</h3>
+<p>Then you will see how complex the implementation can be!</p>
+<h2 id="reading-this-article-is-a-must-for-you">Reading this article is a must for you...</h2>
+<p>... if at least one of the statement is true:</p>
+<ol>
+<li>
+<p>You already use Azure Policy, or you are going to use it. </p>
+</li>
+<li>
+<p>Having a <strong>consistent and compliant Azure environment</strong> makes sense for you.</p>
+</li>
+<li>
+<p>An <strong>automated way</strong> of <strong>validating</strong> your <strong>changes</strong> is welcome for you.</p>
+</li>
+<li>
+<p>You want to perform <strong>end-to-end</strong> Azure Policy assignment effects checks without any additional effort.</p>
+</li>
+<li>
+<p>You are sick when it comes to performing manual work.</p>
+</li>
+</ol>
+<h2 id="how-will-this-process-look-like-finally">How will this process look like finally?</h2>
+<ol>
+<li>
+<p>There is a new <strong>compliance requirement</strong>, or one of the currents has changed.</p>
+</li>
+<li>
+<p>A new <strong>feature branch</strong> is created for Azure Policy development.</p>
+</li>
+<li>
+<p><strong>ARM template</strong> with Azure Policy/ Policy Set, Initiative, and Assignment resources is ready.</p>
+</li>
+<li>
+<p>A new <strong>Pull Request</strong> is created.</p>
+</li>
+<li>
+<p>A <strong>pipeline</strong> that deploys policy to a dedicated subscription is <strong>triggered</strong>.</p>
+</li>
+<li>
+<p>It waits 30 minutes to be sure that assignments are in-place.</p>
+</li>
+<li>
+<p>It validates if the policy is working as expected by performing <strong>automated</strong> Pester <strong>tests</strong>.</p>
+</li>
+<li>
+<p>Test results are generated and published.</p>
+</li>
+<li>
+<p>PR cannot be completed if any test has failed.</p>
+</li>
+</ol>
+<h2 id="pr-cannot-be-completed-if-any-test-has-failed">PR cannot be completed if any test has failed.</h2>
+<p><img alt="Azure Policy Build Failed" src="../img/azure-policy-continous-integration-005-build-failed.jpg" /></p>
+<p><img alt="Azure Policy Test Results" src="../img/azure-policy-continous-integration-004-test-result.jpg" /></p>
+<p><img alt="Azure Policy Pull Request" src="../img/azure-policy-continous-integration-003-pull-request.jpg" /></p>
+<h2 id="who-are-you">Who are you?</h2>
+<p>We assume that...</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">PS </span><span class="n">C</span><span class="err">:</span><span class="p">\&gt;</span> <span class="nv">$You</span><span class="p">.</span><span class="n">SessionLevelReadiness</span> <span class="o">-GE</span> <span class="n">200</span>
+<span class="n">True</span>
+</code></pre></div>
+
+
+<p>... so we are re not providing detailed, step by step instructions on how to create every single resource required to deploy this solution.
+We believe that you can deploy and configure them without additional instructions, or you are able to find them on your own.</p>
+<h1 id="almost-step-by-step-guide">Almost step by step guide.</h1>
+<h2 id="repository-hierarchy">Repository hierarchy.</h2>
+<div class="codehilite"><pre><span></span><code>¦
+¦   README.md
+¦
++---arm
+¦       ResourceGroups.json
+¦       TaggingGovernance.json
+¦
++---scripts
+        Tagging.Tests.ps1
+</code></pre></div>
+
+
+<p>TaggingGovernance.json is a placeholder for Azure Policy implementation.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{},</span>
+    <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[]</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+<h2 id="pipeline">Pipeline</h2>
+<p><img alt="Azure Policy Pipeline" src="../img/azure-policy-continous-integration-001-pipeline.jpg" /></p>
+<h2 id="pipeline-details">Pipeline details</h2>
+<h3 id="cleanup-current-azure-policy-assignment-script">cleanup current azure policy assignment - script</h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">Get-AzPolicyAssignment</span> <span class="p">|</span> <span class="p">`</span>
+<span class="nb">Where-Object</span> <span class="n">-Property</span> <span class="n">Name</span> <span class="o">-NE</span> <span class="s1">&#39;SecurityCenterBuiltIn&#39;</span> <span class="p">|</span> <span class="p">`</span>
+<span class="nb">Remove-AzPolicyAssignment</span>
+</code></pre></div>
+
+
+<h3 id="install-pester-script">install pester - script</h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">Install-Module</span> <span class="n">-Name</span> <span class="n">Pester</span> <span class="n">-Force</span> <span class="n">-SkipPublisherCheck</span>
+</code></pre></div>
+
+
+<h3 id="run-tests-script">run tests - script</h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">Set-Location</span> <span class="n">-Path</span> <span class="nv">$Env:BUILD_SOURCESDIRECTORY</span>
+<span class="nb">Invoke-Pester</span> <span class="n">-OutputFile</span> <span class="s2">&quot;./testresult.xml&quot;</span> <span class="n">-OutputFormat</span> <span class="s1">&#39;NUnitXML&#39;</span>
+</code></pre></div>
+
+
+<h3 id="publish-test-result">publish test result</h3>
+<p><img alt="Azure Policy Publish Test Results" src="../img/azure-policy-continous-integration-002-publish-test-results.jpg" /> </p>
+<h3 id="it-should-like-similar">It should like similar:</h3>
+<h2 id="branch-policy">Branch policy</h2>
+<p><img alt="Azure Policy Branch Policy" src="../img/azure-policy-continous-integration-006-branch-policy.jpg" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+  <h2 id="__comments">Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://automate.guru/azure-policy-continous-integration/";
+      this.page.identifier =
+        "azure-policy-continous-integration/";
+    };
+    (function() {
+      var d = document, s = d.createElement("script");
+      s.src = "//automate-guru.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../multi-stage-yaml-pipeline-configuration/" title="Multi-Stage YAML Pipeline Configuration" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Multi-Stage YAML Pipeline Configuration
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+    
+  </body>
+</html>

@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url>
      <loc>https://automate.guru/azure-devops-audit-logs-forwarding/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://automate.guru/azure-lighthouse-configuration/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://automate.guru/powershell-web-browser-automation/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://automate.guru/copy-database-between-stages/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://automate.guru/security-and-compliance-as-a-code-azure-policy-tdd/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url><url>
      <loc>https://automate.guru/multi-stage-yaml-pipeline-configuration/</loc>
-     <lastmod>2020-04-24</lastmod>
+     <lastmod>2020-05-04</lastmod>
+     <changefreq>daily</changefreq>
+    </url><url>
+     <loc>https://automate.guru/azure-policy-continous-integration/</loc>
+     <lastmod>2020-05-04</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>
