@@ -347,7 +347,8 @@ Go to your web browser and navigate to your application address.
 If you see screen similar like on above without any error probably it's working.
 
 But to be 100% sure check certificate ;)
+
 ![Application](img/aks-cert-manager-004.jpg)
 
 If something is not clear in this process, please leave a comment.
-Hope that I will be able to help you!
+Hope that we will be able to help you!
