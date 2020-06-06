@@ -18,8 +18,6 @@ theme:
       # code: 'Roboto Mono'
       code: 'Ubuntu Mono'
 
-
-
 nav:
     # - About: 'index.md'
     - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
@@ -30,6 +28,8 @@ nav:
     - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
     - Continous Inspection For Azure Policy: 'azure-policy-continous-integration.md'
     - Automatic Certificate Generation for AKS: 'automatic-certificate-generation-aks.md'
+    - Azure Management Group Hierarchy Best Practises: 'management-group-best-practises.md'
+    # - ARM What-If Deployment PR Comment: 'arm-what-if-deployment-pull-request-comment.md'
 
     # - 'User Guide':
     #     - 'Writing your docs': 'writing-your-docs.md'
@@ -50,4 +50,14 @@ markdown_extensions:
   - admonition
   - codehilite:
       guess_lang: false
+  - footnotes
   - meta
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde

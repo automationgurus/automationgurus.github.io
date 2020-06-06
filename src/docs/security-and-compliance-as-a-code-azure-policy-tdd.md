@@ -288,4 +288,11 @@ Describe "Tagging Initiative" {
 
 ## Continuous Inspection Process
 
-Coming soon...
+[Automated Azure Policy Continous Inspection process implementation with Azure Dev](/azure-policy-continous-integration/)
+
+## Author
+
+![Kamil Wiecek](img/kamil-wiecek-001.png)
+
+**Kamil Więcek** is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."

@@ -1,14 +1,19 @@
 # Forward Azure DevOps Audit Logs to Log Analytics Workspace
 
+!!! danger
+    You will find more details [here](https://devblogs.microsoft.com/devops/auditing-for-azure-devops-is-now-in-public-preview/)
+    Update! At the moment of writing, this functionality was not provided, but now it is in public preview. We always recommend using built-in, supported features. 
+    ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-011.jpg)
+
+!!! info
+    Why is this article not removed? 
+    There is a part of the script you can use to query Audit Logs via API and stream custom logs to Log Analytics.
+
 ## Is Log Analytics Workspace clairvoyant?
 
 No it isn't! Therefore, we developed an automated solution that is continuously streaming audit logs from Azure DevOps to Log Analytics Workspace.
 
-
 ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-004.jpg)
-
-
-
 
 ## Let's start from demo.
 
@@ -22,7 +27,6 @@ No it isn't! Therefore, we developed an automated solution that is continuously 
 
 3. Check the results.
 ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-010.jpg)
-
 
 
 ## What is available out of the box?
@@ -301,3 +305,9 @@ AzureDevOps_CL
 
 1. [mohitgoyal.co: Working with Audit logs in Azure DevOps](https://mohitgoyal.co/2019/07/24/working-with-audit-logs-in-azure-devops/)
 
+## Author
+
+![Kamil Wiecek](img/kamil-wiecek-001.png)
+
+**Kamil Więcek** is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."
