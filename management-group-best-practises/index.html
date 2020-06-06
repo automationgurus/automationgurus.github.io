@@ -11,7 +11,7 @@
       <meta http-equiv="x-ua-compatible" content="ie=edge">
       
       
-        <link rel="canonical" href="https://automate.guru/about-us/">
+        <link rel="canonical" href="https://automate.guru/management-group-best-practises/">
       
       
       
@@ -38,7 +38,7 @@
     
     
       
-        <title>About us - Automation Bible</title>
+        <title>How to plan Azure Management Group hierarchy? Organize ubscriptions and resources in Azure.</title>
       
     
     
@@ -110,6 +110,10 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
+      <a href="#azure-management-groups-hierarchy-best-practises-and-overview" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
     
       <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
@@ -132,7 +136,7 @@
             </span>
             <span class="md-header-nav__topic">
               
-                About us
+                How to plan Azure Management Group hierarchy? Organize ubscriptions and resources in Azure.
               
             </span>
           
@@ -291,6 +295,90 @@
   </li>
 
     
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        Azure Management Group Hierarchy Best Practises
+      </label>
+    
+    <a href="./" title="Azure Management Group Hierarchy Best Practises" class="md-nav__link md-nav__link--active">
+      Azure Management Group Hierarchy Best Practises
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-will-you-get-without-any-additional-costs" class="md-nav__link">
+    What will you get without any additional costs?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-a-must-or-rather-than-a-choice-why" class="md-nav__link">
+    Is it a must or rather than a choice? Why?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-most-important-technical-details" class="md-nav__link">
+    The most important technical details.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    Best practices
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#author" class="md-nav__link">
+    Author
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
   </ul>
 </nav>
                   </div>
@@ -298,15 +386,135 @@
               </div>
             
             
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-will-you-get-without-any-additional-costs" class="md-nav__link">
+    What will you get without any additional costs?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#is-it-a-must-or-rather-than-a-choice-why" class="md-nav__link">
+    Is it a must or rather than a choice? Why?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-most-important-technical-details" class="md-nav__link">
+    The most important technical details.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#best-practices" class="md-nav__link">
+    Best practices
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#author" class="md-nav__link">
+    Author
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content">
             <article class="md-content__inner md-typeset">
               
                 
                 
-                  <h1>About us</h1>
-                
-                
+                <h1 id="azure-management-groups-hierarchy-best-practises-and-overview">Azure Management Groups Hierarchy - Best Practises and Overview</h1>
+<!-- ![Start using management groups](img/deploy-management-group-hierarchy-001.jpg) -->
+
+<p>In an enterprise-scale, we deal with multiple projects, applications, environments, R&amp;D initiatives, proofs of concept. 
+Therefore the <strong>number of workloads</strong> running on in the cloud is snowballing. 
+A good approach is to divide workloads into separate subscriptions. Thanks to Management Groups <strong>assigning policies and permissions</strong> management across <strong>multiple Azure subscriptions</strong> are no longer painful. </p>
+<p><img alt="Azure Management Group Hierarchy" src="../img/management-groups-best-practises-002.jpg" /></p>
+<p>This article explains the concept, summarizes best practices, and shows how you can automate Management Group hierarchy deployment.</p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>After reading the 'why' section, you might realize that your scale doesn't require multiple subscriptions and management group hierarchy. It is a reasonable choice to follow 'keep it simple stupid' rule then. </p>
+</div>
+<h2 id="what-will-you-get-without-any-additional-costs">What will you get without any additional costs?</h2>
+<ul>
+<li>Centralized management</li>
+<li>Subscriptions grouping</li>
+<li>Apply <strong>policies</strong>, <strong>access control</strong>, and blueprints</li>
+<li>Level of scope over resource groups and subscriptions </li>
+<li><strong>Inheritance</strong> of governance artifacts</li>
+<li>Compliance and cost reporting by organizations</li>
+</ul>
+<p><img alt="Azure Management Group Best Practises" src="../img/management-groups-best-practises-001.jpg" /></p>
+<h2 id="is-it-a-must-or-rather-than-a-choice-why">Is it a must or rather than a choice? Why?</h2>
+<ul>
+<li>Subscription CRUD process won't stop, dozens or even hundreds of subscriptions can be managed without extra effort</li>
+<li>The efficiency of governance is not possible at <strong>scale</strong> without MG</li>
+<li>It is simpler to assign roles and apply policies to multiple subscriptions when they are grouped into MG</li>
+<li>You cannot leave new subscription as it is, Azure Policy and role assignments should cover them</li>
+<li>Avoid administration re-work and configuration drift</li>
+</ul>
+<h2 id="the-most-important-technical-details">The most important technical details.</h2>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Be careful with enforcing configuration at the Root level.  It allows global policies and RBAC assignments. Therefore if you deny something at this level, then it won't be possible to use it in the entire structure. Every item you want to apply here must be tested before applying.</p>
+</div>
+<ul>
+<li>One management group hierarchy per tenant</li>
+<li>The top-level group is Root, and it cannot be removed, its Id equals to Tenant Id</li>
+<li>New subscriptions are created in Root MG </li>
+<li>User Access Administrator can manage Root MG after elevation</li>
+<li>One child to parent and one parent to multiple child relations </li>
+<li>Hierarchy can be six levels of depth</li>
+<li>Child subscriptions and groups inherit RBAC and policy</li>
+<li>New subscriptions will be governed automatically</li>
+<li>10,000 groups can be created</li>
+</ul>
+<h2 id="best-practices">Best practices</h2>
+<p><img alt="Azure Management Group Role And Policy Assignment" src="../img/management-groups-best-practises-003.jpg" /></p>
+<ul>
+<li>Apply critical, non-negotiable controls ar the Root Management Group, for example, regulatory requirements.</li>
+<li>Limit management group depth, use <strong>two, or three levels</strong> should be enough in most scenarios.</li>
+<li>Do segmentation properly. <strong>Identify</strong> subscriptions that should <strong>share</strong> the RBAC model and Policies, avoid overlapping.</li>
+<li>Create an additional segment for testing purposes. Test the impact on a lower number of subscriptions before applying changes to scale.</li>
+</ul>
+<h2 id="author">Author</h2>
+<p><img alt="Kamil Wiecek" src="../img/kamil-wiecek-001.png" /></p>
+<p><strong>Kamil Więcek</strong> is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."</p>
                 
                   
                 
@@ -320,9 +528,9 @@
   <div id="disqus_thread"></div>
   <script>
     var disqus_config = function () {
-      this.page.url = "https://automate.guru/about-us/";
+      this.page.url = "https://automate.guru/management-group-best-practises/";
       this.page.identifier =
-        "about-us/";
+        "management-group-best-practises/";
     };
     (function() {
       var d = document, s = d.createElement("script");
@@ -340,6 +548,27 @@
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../automatic-certificate-generation-aks/" title="Automatic Certificate Generation for AKS" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                Automatic Certificate Generation for AKS
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
