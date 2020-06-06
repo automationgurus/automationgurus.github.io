@@ -31,11 +31,6 @@ Every single step of the entire automation process is more or less:
 
 ![powershell-web-browser-automation-identify-element](img/powershell-automate-web-browser-000.jpg)
 
-
-
-
-
-
 ## How to navigate to URL?
 
 ```powershell
@@ -251,3 +246,10 @@ while (-not $AcceptElement )
 
 Write-Host -Object "End"
 ```
+
+## Author
+
+![Kamil Wiecek](img/kamil-wiecek-001.png)
+
+**Kamil Więcek** is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."

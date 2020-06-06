@@ -62,15 +62,17 @@ Then you will see how complex the implementation can be!
 
 9. PR cannot be completed if any test has failed.
 
+### Branch policy
+
+![Azure Policy Branch Policy](img/azure-policy-continous-integration-006-branch-policy.jpg)
 
 ## PR cannot be completed if any test has failed.
 
-![Azure Policy Build Failed](img/azure-policy-continous-integration-005-build-failed.jpg)
-
 ![Azure Policy Test Results](img/azure-policy-continous-integration-004-test-result.jpg)
 
-![Azure Policy Pull Request](img/azure-policy-continous-integration-003-pull-request.jpg)
+![Azure Policy Build Failed](img/azure-policy-continous-integration-005-build-failed.jpg)
 
+![Azure Policy Pull Request](img/azure-policy-continous-integration-003-pull-request.jpg)
 
 ## Who are you?
 
@@ -142,9 +144,9 @@ Invoke-Pester -OutputFile "./testresult.xml" -OutputFormat 'NUnitXML'
 
 ![Azure Policy Publish Test Results](img/azure-policy-continous-integration-002-publish-test-results.jpg) 
 
+## Author
 
-### It should like similar:
+![Kamil Wiecek](img/kamil-wiecek-001.png)
 
-## Branch policy
-
-![Azure Policy Branch Policy](img/azure-policy-continous-integration-006-branch-policy.jpg)
+**Kamil Więcek** is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."
