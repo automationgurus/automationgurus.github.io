@@ -4,7 +4,7 @@ site_url: https://automate.guru/
 
 pages:
   - Home: 'azure-devops-audit-logs-forwarding.md'
-  # - Home: 'test.md'
+  - Home: 'test.md'
 
 theme:
   name: 'material'
@@ -20,15 +20,26 @@ theme:
 
 nav:
     # - About: 'index.md'
-    - Azure DevOps Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
+    - 'Azure DevOps':
+      - Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
+      - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
+      # - Universal ARM Template Deployment Script: 'universal-arm-deployment-script'
+
     - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
-    - Powershell Web-Based Automation: 'powershell-web-browser-automation.md'
+    - 'PowerShell':
+      - Web-Based Automation With Selenium: 'powershell-web-browser-automation.md'
+    
     - Copy Azure database between stages: 'copy-database-between-stages.md'
-    - Security And Compliance As A Code Azure Policy TDD: 'security-and-compliance-as-a-code-azure-policy-tdd.md'
-    - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
-    - Continous Inspection For Azure Policy: 'azure-policy-continous-integration.md'
     - Automatic Certificate Generation for AKS: 'automatic-certificate-generation-aks.md'
-    - Azure Management Group Hierarchy Best Practises: 'management-group-best-practises.md'
+
+    - 'Azure Management Group':
+      - Hierarchy Best Practises: 'management-group-best-practises.md'
+      - Deploy As a Code: 'deploy-management-group-hierarchy'
+      
+    - 'Azure Policy/ Compliance':
+      - Security And Compliance As A Code - TDD: 'security-and-compliance-as-a-code-azure-policy-tdd.md'
+      - Continous Inspection For Azure Policy: 'azure-policy-continous-integration.md'
+      # - Automate Role Assignment For Policy Assignment Identity: 'ensure-policy-assignment-msi-permission-for-mg.md'
     # - ARM What-If Deployment PR Comment: 'arm-what-if-deployment-pull-request-comment.md'
 
     # - 'User Guide':
@@ -58,6 +69,11 @@ markdown_extensions:
   - pymdownx.magiclink
   - pymdownx.mark
   - pymdownx.smartsymbols
+  - pymdownx.superfences
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  # - pymdownx.tabbed
+
+extra_javascript:
+  - javascripts/extra.js

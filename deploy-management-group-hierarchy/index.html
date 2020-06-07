@@ -1,0 +1,861 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="How to deploy Azure Management Groups hierarchy in Infrastructure as a Code manner?">
+      
+      
+        <link rel="canonical" href="https://automate.guru/deploy-management-group-hierarchy/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>Deploy Management Group Hierarchy as a Code</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+        <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
+      
+      
+        
+        
+        <meta name="theme-color" content="#2196f3">
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CUbuntu+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Ubuntu Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+        
+<script>
+  window.ga = window.ga || function() {
+    (ga.q = ga.q || []).push(arguments)
+  }
+  ga.l = +new Date
+  /* Setup integration and send page view */
+  ga("create", "UA-160963982-1", "auto")
+  ga("set", "anonymizeIp", true)
+  ga("send", "pageview")
+  /* Register handler to log search on blur */
+  document.addEventListener("DOMContentLoaded", () => {
+    if (document.forms.search) {
+      var query = document.forms.search.query
+      query.addEventListener("blur", function() {
+        if (this.value) {
+          var path = document.location.pathname;
+          ga("send", "pageview", path + "?q=" + this.value)
+        }
+      })
+    }
+  })
+</script>
+<script async src="https://www.google-analytics.com/analytics.js"></script>
+      
+    
+    
+  </head>
+  
+    
+    
+    <body dir="ltr" data-md-color-primary="blue" data-md-color-accent="blue">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#deploy-management-group-hierarchy-as-a-code" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="https://automate.guru/" title="Automation Bible" aria-label="Automation Bible" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              Automation Bible
+            </span>
+            <span class="md-header-nav__topic">
+              
+                Deploy Management Group Hierarchy as a Code
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="https://automate.guru/" title="Automation Bible" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    Automation Bible
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      Azure DevOps
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        Azure DevOps
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../azure-devops-audit-logs-forwarding/" title="Audit Logs Forwarder" class="md-nav__link">
+      Audit Logs Forwarder
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../multi-stage-yaml-pipeline-configuration/" title="Multi-Stage YAML Pipeline Configuration" class="md-nav__link">
+      Multi-Stage YAML Pipeline Configuration
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../azure-lighthouse-configuration/" title="Azure Lighthouse Configuration" class="md-nav__link">
+      Azure Lighthouse Configuration
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      PowerShell
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        PowerShell
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../powershell-web-browser-automation/" title="Web-Based Automation With Selenium" class="md-nav__link">
+      Web-Based Automation With Selenium
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../copy-database-between-stages/" title="Copy Azure database between stages" class="md-nav__link">
+      Copy Azure database between stages
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../automatic-certificate-generation-aks/" title="Automatic Certificate Generation for AKS" class="md-nav__link">
+      Automatic Certificate Generation for AKS
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      Azure Management Group
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        Azure Management Group
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../management-group-best-practises/" title="Hierarchy Best Practises" class="md-nav__link">
+      Hierarchy Best Practises
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="." title="Deploy As a Code" class="md-nav__link">
+      Deploy As a Code
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Azure Policy/ Compliance
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Azure Policy/ Compliance
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../security-and-compliance-as-a-code-azure-policy-tdd/" title="Security And Compliance As A Code - TDD" class="md-nav__link">
+      Security And Compliance As A Code - TDD
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../azure-policy-continous-integration/" title="Continous Inspection For Azure Policy" class="md-nav__link">
+      Continous Inspection For Azure Policy
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before" class="md-nav__link">
+    Before
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#create-service-principal-and-assign-owner-role" class="md-nav__link">
+    Create Service Principal and assign Owner role
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#folders-and-files-structure" class="md-nav__link">
+    Folders And Files Structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#management-group-arm-template" class="md-nav__link">
+    Management Group ARM Template
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#management-groups-naming" class="md-nav__link">
+    Management Groups Naming
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameter-files" class="md-nav__link">
+    Parameter Files
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-will-be-deployed" class="md-nav__link">
+    How it will be deployed?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deploy" class="md-nav__link">
+    Deploy!
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#result" class="md-nav__link">
+    Result
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#author" class="md-nav__link">
+    Author
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+        <li class="md-nav__item">
+          <a href="#__comments" class="md-nav__link md-nav__link--active">
+            Comments
+          </a>
+        </li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="deploy-management-group-hierarchy-as-a-code">Deploy Management Group Hierarchy as a Code</h1>
+<p><img alt="Start using Management Groups" src="../img/deploy-management-group-hierarchy-006.jpg" /></p>
+<p>In our article, we'll rename the Root Management Group, create two child MG's and one 'child of a child' MG. Although it is possible to place Subscription inside MG using ARM Templates, we will not make it that way. Our approach is to make it by script. We will cover this topic in one of the future posts.</p>
+<div class="admonition success">
+<p class="admonition-title">Managemet Groups deployemtnt with tempales is pretty new</p>
+</div>
+<p>Support for deploying Azure Management Groups with Resource Manager Template has been introduced recently. Previously there was no built-in functionality to deploy them using declarative way. The best option to create the MG hierarchy 'as a code' until now was Tao's script. It also includes subscription placement automation based on Regex, so it's still worth checking it!</p>
+<p><a href="https://blog.tyang.org/2019/09/08/configuring-azure-management-group-hierarchy-using-azure-devops/">Configuring Azure MG using Azure DevOps by Tao Yang</a></p>
+<div class="admonition warning">
+<p class="admonition-title">Read before deployment</p>
+<ul>
+<li>
+<p>Management Groups must be deployed at the Tenant Scope</p>
+</li>
+<li>
+<p>Root MG can be renamed using our ARM Template</p>
+</li>
+<li>
+<p>'Start using MG' muse be done to proceed</p>
+</li>
+</ul>
+<p><img alt="Start using Management Groups" src="../img/deploy-management-group-hierarchy-001.jpg" /></p>
+</div>
+<h2 id="before">Before</h2>
+<p><img alt="Start using Management Groups" src="../img/deploy-management-group-hierarchy-003.jpg" /></p>
+<h3 id="create-service-principal-and-assign-owner-role">Create Service Principal and assign Owner role</h3>
+<div class="codehilite"><pre><span></span><code><span class="nv">$spDisplayName</span> <span class="p">=</span> <span class="s1">&#39;mgHierarchy&#39;</span>
+<span class="nv">$tenantId</span> <span class="p">=</span> <span class="s1">&#39;33369038-1d6a-4577-955e-debbde0cd093&#39;</span>
+<span class="nv">$sp</span> <span class="p">=</span> <span class="nb">New-AzADServicePrincipal</span> <span class="n">-DisplayName</span> <span class="nv">$spDisplayName</span> <span class="n">-Scope</span> <span class="s1">&#39;/&#39;</span> <span class="n">-Role</span> <span class="n">Owner</span>
+
+<span class="nv">$credentials</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">PSCredential</span> <span class="n">-ArgumentList</span> <span class="nv">$sp</span><span class="p">.</span><span class="n">ApplicationId</span><span class="p">,</span> <span class="nv">$sp</span><span class="p">.</span><span class="n">Secret</span>
+<span class="nb">Connect-AzAccount</span> <span class="n">-ServicePrincipal</span> <span class="n">-Credential</span> <span class="nv">$credentials</span> <span class="n">-Tenant</span> <span class="nv">$tenantId</span>
+</code></pre></div>
+
+<h2 id="folders-and-files-structure">Folders And Files Structure</h2>
+<div class="codehilite"><pre><span></span><code>|   Deploy-ArmTemplates.ps1
+|   ManagementGroupsHierarchy.DeploymentDefinition.json
+\---ManagementGroups
+        ManagementGroup.json
+        ManagementGroup.Root.Parameters.json
+        ManagementGroup.Prod.Parameters.json
+        ManagementGroup.NonProd.Parameters.json
+        ManagementGroup.ProdCritical.Parameters.json
+</code></pre></div>
+
+<h2 id="management-group-arm-template">Management Group ARM Template</h2>
+<p>We will keep up to date ARM Template for Management Groups on GitHub repo: </p>
+<p><a href="https://github.com/kwiecek/arm-templates">ARM Templates GitHub Repository</a></p>
+<details class="note"><summary>ManagementGroup.Root.Parameters.json</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Management Group ID.&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;defaultValue&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The friendly name of the management group. If no value is passed then this field will be set to the groupId.&quot;</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;parentId&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;string&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;defaultValue&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;metadata&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The fully qualified ID for the parent management group. For example, /providers/Microsoft.Management/managementGroups/0000000-0000-0000-0000-000000000000. Create management group under root or modify root display name if empty.&quot;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;functions&quot;</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;variables&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;[parameters(&#39;name&#39;)]&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;type&quot;</span><span class="p">:</span> <span class="s2">&quot;Microsoft.Management/managementGroups&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;2020-02-01&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;properties&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="s2">&quot;[if(empty(parameters(&#39;displayName&#39;)),json(&#39;null&#39;),parameters(&#39;displayName&#39;))]&quot;</span><span class="p">,</span>
+                <span class="nt">&quot;details&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;parent&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;[if(empty(parameters(&#39;parentId&#39;)),json(&#39;null&#39;),parameters(&#39;parentId&#39;))]&quot;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;resources&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;outputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</details>
+<h3 id="management-groups-naming">Management Groups Naming</h3>
+<table>
+<thead>
+<tr>
+<th align="left">Id/Name</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">Tenant</td>
+<td align="left">11111111-1111-1111-1111-111111111111</td>
+</tr>
+<tr>
+<td align="left">Root</td>
+<td align="left">1111111-1111-1111-1111-1111111111111</td>
+</tr>
+<tr>
+<td align="left">Prod</td>
+<td align="left">2222222-2222-2222-2222-2222222222222</td>
+</tr>
+<tr>
+<td align="left">Non-Prod</td>
+<td align="left">3333333-3333-3333-3333-3333333333333</td>
+</tr>
+<tr>
+<td align="left">Prod-Critical</td>
+<td align="left">4444444-4444-4444-4444-4444444444444</td>
+</tr>
+</tbody>
+</table>
+<h2 id="parameter-files">Parameter Files</h2>
+<ul>
+<li>If you do not provide the Name/Id of the parent MG and the name parameter is equal to Tenant Id, then you configure Root MG. </li>
+</ul>
+<details class="note"><summary>ManagementGroup.Root.Parameters.json - rename 'Root Management Group' to 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Root&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;parentId&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>    
+</code></pre></div>
+
+</details>
+<ul>
+<li>If the name is different than Tenant ID, then you create child MG under Root MG.</li>
+</ul>
+<details class="note"><summary>ManagementGroup.Prod.Parameters.json - create 'Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;2222222-2222-2222-2222-2222222222222&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Prod&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;parentId&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>    
+</code></pre></div>
+
+</details>
+<details class="note"><summary>ManagementGroup.NonProd.Parameters.json - create 'Non-Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;3333333-3333-3333-3333-3333333333333&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Non-Prod&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;parentId&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>    
+</code></pre></div>
+
+</details>
+<ul>
+<li>If you want to create MG under non-root MG, then you need to specify parent MG. It must be its fully qualified ID.</li>
+</ul>
+<details class="note"><summary>ManagementGroup.ProdCritical.Parameters.json - create 'Prod-Critical' MG under 'Prod'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+    <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;4444444-4444-4444-4444-4444444444444&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;displayName&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;Prod-Critical&quot;</span>
+        <span class="p">},</span>
+        <span class="nt">&quot;parentId&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;value&quot;</span><span class="p">:</span> <span class="s2">&quot;/providers/Microsoft.Management/managementGroups/2222222-2222-2222-2222-2222222222222&quot;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>    
+</code></pre></div>
+
+</details>
+<h2 id="how-it-will-be-deployed">How it will be deployed?</h2>
+<p>We deploy templates using universal, multi-scope PowerShell deployment script. The script's code is available on GitHub repo. </p>
+<p><a href="https://github.com/kwiecek/azure-arm-deployment-script">ARM Templates GitHub Repository</a></p>
+<p>Here you can find details about our motivation and concept:</p>
+<p><a href="/azure-arm-deployment-script">Deploy ARM Templates at Any Scope With Universal Script</a></p>
+<h2 id="deploy">Deploy!</h2>
+<details class="note"><summary>ManagementGroupsHierarchy.DeploymentDefinition.json</summary><div class="codehilite"><pre><span></span><code><span class="p">[</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;Order&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="nt">&quot;TenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.json&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateParameterFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.Root.Parameters.json&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;Order&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="nt">&quot;TenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.json&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateParameterFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.Prod.Parameters.json&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;Order&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="nt">&quot;TenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.json&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateParameterFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.ProdCritical.Parameters.json&quot;</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+        <span class="nt">&quot;Order&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+        <span class="nt">&quot;TenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.json&quot;</span><span class="p">,</span>
+        <span class="nt">&quot;TemplateParameterFile&quot;</span><span class="p">:</span> <span class="s2">&quot;ManagementGroups\\ManagementGroup.NonProd.Parameters.json&quot;</span>
+    <span class="p">}</span>
+<span class="p">]</span>
+</code></pre></div>
+
+</details>
+<div class="codehilite"><pre><span></span><code><span class="p">.\</span><span class="n">Deploy-ArmTemplates</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-DeploymentDefinitionsPath</span> <span class="p">.\</span><span class="n">ManagementGroupsHierarchy</span><span class="p">.</span><span class="n">DeploymentDefinition</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+
+<h2 id="result">Result</h2>
+<p><img alt="Management Group Hierarchy" src="../img/deploy-management-group-hierarchy-004.jpg" /></p>
+<h2 id="author">Author</h2>
+<p><img alt="Kamil Wiecek" src="../img/kamil-wiecek-001.png" /></p>
+<p><strong>Kamil Więcek</strong> is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+  <h2 id="__comments">Comments</h2>
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "https://automate.guru/deploy-management-group-hierarchy/";
+      this.page.identifier =
+        "deploy-management-group-hierarchy/";
+    };
+    (function() {
+      var d = document, s = d.createElement("script");
+      s.src = "//automate-guru.disqus.com/embed.js";
+      s.setAttribute("data-timestamp", +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+        <script src="../javascripts/extra.js"></script>
+      
+    
+  </body>
+</html>

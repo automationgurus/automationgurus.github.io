@@ -1,6 +1,6 @@
 ---
-title: How to plan Azure Management Group hierarchy? Organize ubscriptions and resources in Azure.
-description: 
+title: Resource organization best practises
+description: How to plan Azure Management Group hierarchy? Organize ubscriptions and resources in Azure.
 ---
 
 # Azure Management Groups Hierarchy - Best Practises and Overview
@@ -9,7 +9,7 @@ description:
 
 
 In an enterprise-scale, we deal with multiple projects, applications, environments, R&D initiatives, proofs of concept. 
-Therefore the **number of workloads** running on in the cloud is snowballing. 
+Therefore the **number of workloads** running in the cloud is snowballing. 
 A good approach is to divide workloads into separate subscriptions. Thanks to Management Groups **assigning policies and permissions** management across **multiple Azure subscriptions** are no longer painful. 
 
 ![Azure Management Group Hierarchy](img/management-groups-best-practises-002.jpg)
