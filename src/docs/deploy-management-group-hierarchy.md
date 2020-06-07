@@ -216,7 +216,7 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
 
 We deploy templates using universal, multi-scope PowerShell deployment script. The script's code is available on GitHub repo. 
 
-[ARM Templates GitHub Repository](https://github.com/kwiecek/azure-arm-deployment-scriptt)
+[Universal Deployment Script GitHub Repo](https://github.com/kwiecek/azure-arm-deployment-script)
 
 <!-- Here you can find details about our motivation and concept:
 
