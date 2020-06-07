@@ -1,12 +1,11 @@
 # Forward Azure DevOps Audit Logs to Log Analytics Workspace
 
-!!! danger
+!!! danger "Partially deprecated"
     You will find more details [here](https://devblogs.microsoft.com/devops/auditing-for-azure-devops-is-now-in-public-preview/)
     Update! At the moment of writing, this functionality was not provided, but now it is in public preview. We always recommend using built-in, supported features. 
     ![Stream audit logs from Azure DevOps to Log Analytics Workspace](img/azure-devops-audit-logs-forwarding-011.jpg)
 
-!!! info
-    Why is this article not removed? 
+!!! question "Why is this article not removed? "
     There is a part of the script you can use to query Audit Logs via API and stream custom logs to Log Analytics.
 
 ## Is Log Analytics Workspace clairvoyant?

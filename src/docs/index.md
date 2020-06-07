@@ -1,4 +1,15 @@
-# Welcome in Automation Bible
+# Automation Gurus mission! What do we do?
+
+# Who are we?
+
+## Artur Brodziński
+
+## Kamil Więcek
+
+![Kamil Wiecek](img/kamil-wiecek-001.png)
+
+**Kamil Więcek** is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 
+Big fan of the following sentence: "if you describe a process mentioning someone's name, then it is not automated."
 
 <!-- ## Backlog
 
@@ -12,16 +23,3 @@
     * [ ] Praesent sed risus massa
 * [ ] Aenean pretium efficitur erat, donec pharetra, ligula non scelerisque
 * [ ] Nulla vel eros venenatis, imperdiet enim id, faucibus nisi -->
-
-# Mission
-
-- provide high-quality content
-- investigate new areas
-- be first 
-
-# Who are we?
-
-## Artur Brodziński
-
-## Kamil Więcek
-
