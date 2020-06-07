@@ -9,7 +9,7 @@ description: How to deploy Azure Management Groups hierarchy in Infrastructure a
 
 In our article, we'll rename the Root Management Group, create two child MG's and one 'child of a child' MG. Although it is possible to place Subscription inside MG using ARM Templates, we will not make it that way. Our approach is to make it by script. We will cover this topic in one of the future posts.
 
-!!! Success "Managemet Groups deployemtnt with tempales is pretty new"
+!!! Success "Managemet Groups deployment with templates is pretty new"
 
 Support for deploying Azure Management Groups with Resource Manager Template has been introduced recently. Previously there was no built-in functionality to deploy them using declarative way. The best option to create the MG hierarchy 'as a code' until now was Tao's script. It also includes subscription placement automation based on Regex, so it's still worth checking it!
 
