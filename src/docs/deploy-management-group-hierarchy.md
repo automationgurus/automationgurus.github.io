@@ -20,7 +20,7 @@ Support for deploying Azure Management Groups with Resource Manager Template has
 
     - Root MG can be renamed using our ARM Template
 
-    - 'Start using MG' muse be done to proceed
+    - 'Start using management groups' action must be completed manually to proceed
 
     ![Start using Management Groups](img/deploy-management-group-hierarchy-001.jpg)
 
