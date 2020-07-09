@@ -1,3 +1,5 @@
+
+
 $Exceptions = @(
     'src',
     '.gitignore',
@@ -12,6 +14,9 @@ Get-ChildItem `
     | Remove-Item -Force -Recurse -Confirm:$false
 
 Set-Location -Path .\src\
+
+Out-File -Append -FilePath .\mkdocs.yml -InputObject "google_analytics: ['UA-160963982-1', 'auto']" 
+# Add-Content -Value "# google_analytics: ['UA-160963982-1', 'auto']" 
 
 mkdocs build -d ..\site\ -c
 cd ..

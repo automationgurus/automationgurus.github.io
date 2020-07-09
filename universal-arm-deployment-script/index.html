@@ -244,6 +244,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="." title="Universal ARM Template Deployment Script" class="md-nav__link">
+      Universal ARM Template Deployment Script
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -438,6 +450,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#what-are-the-requirements" class="md-nav__link">
+    What are the requirements?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#there-are-already-many-ways-to-deploy-templates" class="md-nav__link">
     There are already many ways to deploy templates.
   </a>
@@ -454,20 +473,6 @@
         <li class="md-nav__item">
   <a href="#does-this-process-sound-familiar-to-you" class="md-nav__link">
     Does this process sound familiar to you?
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#do-you-agree-that" class="md-nav__link">
-    Do you agree that...
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-are-the-requirements" class="md-nav__link">
-    What are the requirements?
   </a>
   
 </li>
@@ -497,9 +502,26 @@
                 
                 <h1 id="universal-multi-scope-arm-template-deployment-script">Universal, multi-scope ARM Template Deployment Script</h1>
 <p><img alt="Universal, multi-scope ARM Template Deployment Script" src="../img/universal-arm-deployment-script-001.jpg" /></p>
-<div class="codehilite"><pre><span></span><code>.\Deploy-ArmTemplates.ps1 -DeploymentDefinitionsPath .\DeploymentDefinitions.json
-</code></pre></div>
-
+<div class="admonition question">
+<p class="admonition-title">Do you agree that...</p>
+<p>... we end up having <strong>different deployment experience when testing and deploying to production</strong>? </p>
+<p>Our universal deployment script fixes this inconvenience.</p>
+</div>
+<h2 id="what-are-the-requirements">What are the requirements?</h2>
+<ul>
+<li>
+<p>Have one <strong>consistent way of deploying</strong> ARM templates in any scenario: from the local computer, or any CI/CD toolkit. The ability to execute a PowerShell script is the only required</p>
+</li>
+<li>
+<p>It will <strong>not be required to modify the pipeline</strong> when a new deployment is added. We need only one step that can deploy entire infrastructure, at any scope: Tenant, Management Group, Subscription, and Resource Group.</p>
+</li>
+<li>
+<p><strong>Use new deployment features immediately</strong>. At the moment of writing deployment task in Azure DevOps does not support tenant deployment. </p>
+</li>
+<li>
+<p>It is also not possible to use the new 'What-If' feature. We don't want to wait for them to be available.</p>
+</li>
+</ul>
 <h2 id="there-are-already-many-ways-to-deploy-templates">There are already many ways to deploy templates.</h2>
 <ul>
 <li>Azure Portal</li>
@@ -549,27 +571,6 @@
 <p>automatic deployment starts, but it deploys infrastructure in a different way that was checked locally </p>
 </li>
 </ol>
-<h2 id="do-you-agree-that">Do you agree that...</h2>
-<div class="admonition question">
-<p class="admonition-title">Do you agree that...</p>
-<p>... we end up having <strong>different deployment experience when testing and deploying to production</strong>? </p>
-<p>Our universal deployment script fixes this inconvenience.</p>
-</div>
-<h2 id="what-are-the-requirements">What are the requirements?</h2>
-<ul>
-<li>
-<p>Have one <strong>consistent way of deploying</strong> ARM templates in any scenario: from the local computer, or any CI/CD toolkit. The ability to execute a PowerShell script is the only required</p>
-</li>
-<li>
-<p>It will <strong>not be required to modify the pipeline</strong> when a new deployment is added. We need only one step that can deploy entire infrastructure, at any scope: Tenant, Management Group, Subscription, and Resource Group.</p>
-</li>
-<li>
-<p><strong>Use new deployment features immediately</strong>. At the moment of writing deployment task in Azure DevOps does not support tenant deployment. </p>
-</li>
-<li>
-<p>It is also not possible to use the new 'What-If' feature. We don't want to wait for them to be available.</p>
-</li>
-</ul>
 <h1 id="how-is-it-done-the-universal-deployment-flow">How is it done - the universal deployment flow.</h1>
 <ol>
 <li>
@@ -606,50 +607,56 @@
 </ol>
 <h1 id="lets-use-universal-arm-deployment-script">Let's use universal ARM Deployment script</h1>
 <h2 id="what-will-be-deployed">What will be deployed?</h2>
-<h2 id="script">Script</h2>
-<!-- 1.
-
-2.
-
-3.
-
-4. -->
-
 <p><img alt="Universal, multi-scope ARM Template Deployment Script" src="../img/universal-arm-deployment-script-003.jpg" /></p>
+<h2 id="where-can-you-find-the-script-and-arms">Where can you find the script and ARMs?</h2>
+<p><a href="https://github.com/kwiecek/azure-devsecops/">Check our DevSecOps GitHub Repo</a></p>
 <h2 id="deployment-definition-file">Deployment definition file.</h2>
 <div class="codehilite"><pre><span></span><code>[
     {
-        &quot;Order&quot;: 1,
-        &quot;Template&quot;: &quot;ManagementGroup.json&quot;,
-        &quot;TemplateParameterFile&quot;: &quot;ManagementGroup.Root.Parameters.json&quot;,
-        &quot;TenantId&quot;: &quot;11111111-1111-1111-1111-111111111111&quot;
+        &quot;Order&quot;: 0,
+        &quot;TemplateFile&quot;: &quot;arm-templates\\ManagementGroups\\ManagementGroup.json&quot;,
+        &quot;TemplateParameterFile&quot;: &quot;arm-templates\\ManagementGroups\\ManagementGroup.Root.Parameters.json&quot;,
+        &quot;TenantId&quot;: &quot;{Replace-With-Tenant-Id}&quot;
     },
     {
-        &quot;Order&quot;: 2,
-        &quot;Template&quot;: &quot;RoleAssignment.json&quot;,
-        &quot;TemplateParameterFile&quot;: &quot;RoleAssignment.Soc.Parameters.json&quot;,
-        &quot;TenantId&quot;: &quot;11111111-1111-1111-1111-111111111111&quot;,
-        &quot;ManagementGroupId&quot;: &quot;11111111-1111-1111-1111-111111111111&quot;
+        &quot;Order&quot;: 10,
+        &quot;TemplateFile&quot;: &quot;arm-templates\\PolicySetAssignment\\AllowedLocationsAssignment.json&quot;,
+        &quot;TemplateParameterFile&quot;: &quot;arm-templates\\PolicySetAssignment\\AllowedLocationsAssignment.Enforce.Parameters.Local.json&quot;,
+        &quot;TenantId&quot;: &quot;{Replace-With-Tenant-Id}&quot;,
+        &quot;ManagementGroupId&quot;: &quot;{Replace-With-Tenant-Id}&quot;
     },
     {
-        &quot;Order&quot;: 3,
-        &quot;Template&quot;: &quot;ResourceGroups.json&quot;,
-        &quot;TemplateParameterFile&quot;: &quot;ResourceGroups.Parameters.json&quot;,
-        &quot;TenantId&quot;: &quot;11111111-1111-1111-1111-111111111111&quot;,
-        &quot;SubscriptionId&quot;: &quot;22222222-2222-2222-2222-222222222222&quot;,
-    }, 
+        &quot;Order&quot;: 20,
+        &quot;TemplateFile&quot;: &quot;arm-templates\\ResourceGroups\\ResourceGroups.json&quot;,
+        &quot;TemplateParameterFile&quot;: &quot;arm-templates\\ResourceGroups\\ResourceGroups.Parameters.json&quot;,
+        &quot;TenantId&quot;: &quot;{Replace-With-Tenant-Id}&quot;,
+        &quot;SubscriptionId&quot;: &quot;{Replace-With-Sub-Id}&quot;
+    },
     {
-        &quot;Order&quot;: 4,
-        &quot;Template&quot;: &quot;PublicIp.json&quot;,
-        &quot;TemplateParameterFile&quot;: &quot;PublicIp.Vgw.Parameters.json&quot;,
-        &quot;TenantId&quot;: &quot;11111111-1111-1111-1111-111111111111&quot;,
-        &quot;SubscriptionId&quot;: &quot;22222222-2222-2222-2222-222222222222&quot;,
-        &quot;RgName&quot;: &quot;rg-publicips-westeurope-001&quot;,
+        &quot;Order&quot;: 30,
+        &quot;TemplateFile&quot;: &quot;arm-templates\\PublicIp\\PublicIp.json&quot;,
+        &quot;TemplateParameterFile&quot;: &quot;arm-templates\\PublicIp\\PublicIp.Parameters.json&quot;,
+        &quot;TenantId&quot;: &quot;{Replace-With-Tenant-Id}&quot;,
+        &quot;SubscriptionId&quot;: &quot;{Replace-With-Sub-Id}&quot;,
+        &quot;RgName&quot;: &quot;rg-pip-westeurope-dev-01&quot;,
         &quot;Mode&quot;: &quot;Incremental&quot;
     }
-] 
+]
 </code></pre></div>
 
+<h2 id="deployment">Deployment</h2>
+<div class="codehilite"><pre><span></span><code><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">kwiecek</span><span class="p">/</span><span class="n">azure-devsecops</span><span class="p">.</span><span class="n">git</span>
+<span class="nb">cd </span><span class="n">azure-devsecops</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">Deploy-ArmTemplate</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-DeploymentDefinitionPath</span> <span class="p">.\</span><span class="n">deployment-definitions</span><span class="p">\</span><span class="n">AllScopesExample</span><span class="p">.</span><span class="n">json</span>
+</code></pre></div>
+
+<h2 id="output">Output</h2>
+<h3 id="renamed-tenant-root-management-group-and-assigned-azure-policy">Renamed Tenant Root Management Group and assigned Azure Policy</h3>
+<p><img alt="Universal, multi-scope ARM Template Deployment Script" src="../img/universal-arm-deployment-script-006.jpg" /></p>
+<h3 id="deployed-resource-groups">Deployed Resource Groups</h3>
+<p><img alt="Universal, multi-scope ARM Template Deployment Script" src="../img/universal-arm-deployment-script-005.jpg" /></p>
+<h3 id="deployed-public-ip">Deployed Public IP</h3>
+<p><img alt="Universal, multi-scope ARM Template Deployment Script" src="../img/universal-arm-deployment-script-004.jpg" /></p>
 <!-- ## How it is done -->
 
 <h2 id="author">Author</h2>

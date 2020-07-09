@@ -244,6 +244,18 @@
   </li>
 
         
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../universal-arm-deployment-script" title="Universal ARM Template Deployment Script" class="md-nav__link">
+      Universal ARM Template Deployment Script
+    </a>
+  </li>
+
+        
       </ul>
     </nav>
   </li>
@@ -568,14 +580,18 @@
 <h2 id="before">Before</h2>
 <p><img alt="Start using Management Groups" src="../img/deploy-management-group-hierarchy-003.jpg" /></p>
 <h3 id="create-service-principal-and-assign-owner-role">Create Service Principal and assign Owner role</h3>
-<div class="codehilite"><pre><span></span><code><span class="nv">$spDisplayName</span> <span class="p">=</span> <span class="s1">&#39;mgHierarchy&#39;</span>
-<span class="nv">$tenantId</span> <span class="p">=</span> <span class="s1">&#39;33369038-1d6a-4577-955e-debbde0cd093&#39;</span>
+<div class="codehilite"><pre><span></span><code><span class="nv">$spDisplayName</span> <span class="p">=</span> <span class="p">(</span><span class="nb">New-Guid</span><span class="p">).</span><span class="n">Guid</span>
+<span class="nv">$tenantId</span> <span class="p">=</span> <span class="s1">&#39;11111111-1111-1111-1111-111111111111&#39;</span>
 <span class="nv">$sp</span> <span class="p">=</span> <span class="nb">New-AzADServicePrincipal</span> <span class="n">-DisplayName</span> <span class="nv">$spDisplayName</span> <span class="n">-Scope</span> <span class="s1">&#39;/&#39;</span> <span class="n">-Role</span> <span class="n">Owner</span>
 
 <span class="nv">$credentials</span> <span class="p">=</span> <span class="nb">New-Object</span> <span class="n">-TypeName</span> <span class="n">PSCredential</span> <span class="n">-ArgumentList</span> <span class="nv">$sp</span><span class="p">.</span><span class="n">ApplicationId</span><span class="p">,</span> <span class="nv">$sp</span><span class="p">.</span><span class="n">Secret</span>
 <span class="nb">Connect-AzAccount</span> <span class="n">-ServicePrincipal</span> <span class="n">-Credential</span> <span class="nv">$credentials</span> <span class="n">-Tenant</span> <span class="nv">$tenantId</span>
 </code></pre></div>
 
+<div class="admonition danger">
+<p class="admonition-title">Tenant Id</p>
+<p>Remember to replace '11111111-1111-1111-1111-111111111111' with your Tenant Id</p>
+</div>
 <h2 id="folders-and-files-structure">Folders And Files Structure</h2>
 <div class="codehilite"><pre><span></span><code>|   Deploy-ArmTemplates.ps1
 |   ManagementGroupsHierarchy.DeploymentDefinition.json
@@ -589,8 +605,8 @@
 
 <h2 id="management-group-arm-template">Management Group ARM Template</h2>
 <p>We will keep up to date ARM Template for Management Groups on GitHub repo: </p>
-<p><a href="https://github.com/kwiecek/arm-templates">ARM Templates GitHub Repository</a></p>
-<details class="note"><summary>ManagementGroup.Root.Parameters.json</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<p><a href="https://github.com/kwiecek/azure-devsecops">Azure DevSecOps GitHub Repository</a></p>
+<details class="note"><summary>Show ManagementGroup.Root.Parameters.json</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
     <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
     <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -643,6 +659,10 @@
 
 </details>
 <h3 id="management-groups-naming">Management Groups Naming</h3>
+<div class="admonition danger">
+<p class="admonition-title">Tenant Id</p>
+<p>Remember to replace '11111111-1111-1111-1111-111111111111' with your Tenant Id</p>
+</div>
 <table>
 <thead>
 <tr>
@@ -677,7 +697,7 @@
 <ul>
 <li>If you do not provide the Name/Id of the parent MG and the name parameter is equal to Tenant Id, then you configure Root MG. </li>
 </ul>
-<details class="note"><summary>ManagementGroup.Root.Parameters.json - rename 'Root Management Group' to 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<details class="note"><summary>Show ManagementGroup.Root.Parameters.json - rename 'Root Management Group' to 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
     <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
     <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -698,7 +718,7 @@
 <ul>
 <li>If the name is different than Tenant ID, then you create child MG under Root MG.</li>
 </ul>
-<details class="note"><summary>ManagementGroup.Prod.Parameters.json - create 'Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<details class="note"><summary>Show ManagementGroup.Prod.Parameters.json - create 'Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
     <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
     <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -716,7 +736,7 @@
 </code></pre></div>
 
 </details>
-<details class="note"><summary>ManagementGroup.NonProd.Parameters.json - create 'Non-Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<details class="note"><summary>Show ManagementGroup.NonProd.Parameters.json - create 'Non-Prod' MG under 'Root'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
     <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
     <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -737,7 +757,7 @@
 <ul>
 <li>If you want to create MG under non-root MG, then you need to specify parent MG. It must be its fully qualified ID.</li>
 </ul>
-<details class="note"><summary>ManagementGroup.ProdCritical.Parameters.json - create 'Prod-Critical' MG under 'Prod'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<details class="note"><summary>Show ManagementGroup.ProdCritical.Parameters.json - create 'Prod-Critical' MG under 'Prod'</summary><div class="codehilite"><pre><span></span><code><span class="p">{</span>
     <span class="nt">&quot;$schema&quot;</span><span class="p">:</span> <span class="s2">&quot;https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#&quot;</span><span class="p">,</span>
     <span class="nt">&quot;contentVersion&quot;</span><span class="p">:</span> <span class="s2">&quot;1.0.0.0&quot;</span><span class="p">,</span>
     <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -757,13 +777,13 @@
 </details>
 <h2 id="how-it-will-be-deployed">How it will be deployed?</h2>
 <p>We deploy templates using universal, multi-scope PowerShell deployment script. The script's code is available on GitHub repo. </p>
-<p><a href="https://github.com/kwiecek/azure-arm-deployment-script">Universal Deployment Script GitHub Repo</a></p>
+<p><a href="https://github.com/kwiecek/azure-devsecops/">Universal Deployment Script GitHub Repo</a></p>
 <!-- Here you can find details about our motivation and concept:
 
 [Deploy ARM Templates at Any Scope With Universal Script](/azure-arm-deployment-script) -->
 
 <h2 id="deploy">Deploy!</h2>
-<details class="note"><summary>ManagementGroupsHierarchy.DeploymentDefinition.json</summary><div class="codehilite"><pre><span></span><code><span class="p">[</span>
+<details class="note"><summary>Show ManagementGroupsHierarchy.DeploymentDefinition.json</summary><div class="codehilite"><pre><span></span><code><span class="p">[</span>
     <span class="p">{</span>
         <span class="nt">&quot;Order&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
         <span class="nt">&quot;TenantId&quot;</span><span class="p">:</span> <span class="s2">&quot;1111111-1111-1111-1111-1111111111111&quot;</span><span class="p">,</span>
@@ -792,11 +812,14 @@
 </code></pre></div>
 
 </details>
-<div class="codehilite"><pre><span></span><code><span class="p">.\</span><span class="n">Deploy-ArmTemplates</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-DeploymentDefinitionsPath</span> <span class="p">.\</span><span class="n">ManagementGroupsHierarchy</span><span class="p">.</span><span class="n">DeploymentDefinition</span><span class="p">.</span><span class="n">json</span>
+<div class="codehilite"><pre><span></span><code><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">kwiecek</span><span class="p">/</span><span class="n">azure-devsecops</span><span class="p">.</span><span class="n">git</span>
+<span class="nb">cd </span><span class="n">azure-devsecops</span>
+<span class="p">.\</span><span class="n">scripts</span><span class="p">\</span><span class="n">Deploy-ArmTemplate</span><span class="p">.</span><span class="n">ps1</span> <span class="n">-DeploymentDefinitionPath</span> <span class="p">.\</span><span class="n">deployment-definitions</span><span class="p">\</span><span class="n">ManagementGroupHierarchy</span><span class="p">.</span><span class="n">json</span>
 </code></pre></div>
 
 <h2 id="result">Result</h2>
 <p><img alt="Management Group Hierarchy" src="../img/deploy-management-group-hierarchy-004.jpg" /></p>
+<p><img alt="Management Group Hierarchy" src="../img/deploy-management-group-hierarchy-007.jpg" /></p>
 <h2 id="author">Author</h2>
 <p><img alt="Kamil Wiecek" src="../img/kamil-wiecek-001.png" /></p>
 <p><strong>Kamil Więcek</strong> is twentynine years old IT passionate that will continue to learn, do home projects and practicing new technologies even if he becomes a multimillionaire. 

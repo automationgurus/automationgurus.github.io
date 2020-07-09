@@ -32,14 +32,17 @@ Support for deploying Azure Management Groups with Resource Manager Template has
 ### Create Service Principal and assign Owner role
 
 ``` powershell
-$spDisplayName = 'mgHierarchy'
-$tenantId = '33369038-1d6a-4577-955e-debbde0cd093'
+$spDisplayName = (New-Guid).Guid
+$tenantId = '11111111-1111-1111-1111-111111111111'
 $sp = New-AzADServicePrincipal -DisplayName $spDisplayName -Scope '/' -Role Owner
 
 $credentials = New-Object -TypeName PSCredential -ArgumentList $sp.ApplicationId, $sp.Secret
 Connect-AzAccount -ServicePrincipal -Credential $credentials -Tenant $tenantId
 
 ```
+
+!!! danger "Tenant Id"
+    Remember to replace '11111111-1111-1111-1111-111111111111' with your Tenant Id
 
 ## Folders And Files Structure
 
@@ -58,9 +61,9 @@ Connect-AzAccount -ServicePrincipal -Credential $credentials -Tenant $tenantId
 
 We will keep up to date ARM Template for Management Groups on GitHub repo: 
 
-[ARM Templates GitHub Repository](https://github.com/kwiecek/arm-templates )
+[Azure DevSecOps GitHub Repository](https://github.com/kwiecek/azure-devsecops )
 
-??? note "ManagementGroup.Root.Parameters.json"
+??? note "Show ManagementGroup.Root.Parameters.json"
     ``` json
     {
         "$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",
@@ -118,6 +121,9 @@ We will keep up to date ARM Template for Management Groups on GitHub repo:
 
 ### Management Groups Naming
 
+!!! danger "Tenant Id"
+    Remember to replace '11111111-1111-1111-1111-111111111111' with your Tenant Id
+
 Id/Name         | Value
 :-------------- |:-------------
 Tenant          | 11111111-1111-1111-1111-111111111111
@@ -130,7 +136,7 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
 
 - If you do not provide the Name/Id of the parent MG and the name parameter is equal to Tenant Id, then you configure Root MG. 
 
-??? note "ManagementGroup.Root.Parameters.json - rename 'Root Management Group' to 'Root'"
+??? note "Show ManagementGroup.Root.Parameters.json - rename 'Root Management Group' to 'Root'"
     ``` json
     {
         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
@@ -151,7 +157,7 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
 
 - If the name is different than Tenant ID, then you create child MG under Root MG.
 
-??? note "ManagementGroup.Prod.Parameters.json - create 'Prod' MG under 'Root'"
+??? note "Show ManagementGroup.Prod.Parameters.json - create 'Prod' MG under 'Root'"
     ``` json
     {
         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
@@ -170,7 +176,7 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
     }    
     ```
 
-??? note "ManagementGroup.NonProd.Parameters.json - create 'Non-Prod' MG under 'Root'"
+??? note "Show ManagementGroup.NonProd.Parameters.json - create 'Non-Prod' MG under 'Root'"
     ``` json
     {
         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
@@ -191,7 +197,7 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
 
 - If you want to create MG under non-root MG, then you need to specify parent MG. It must be its fully qualified ID.
 
-??? note "ManagementGroup.ProdCritical.Parameters.json - create 'Prod-Critical' MG under 'Prod'"
+??? note "Show ManagementGroup.ProdCritical.Parameters.json - create 'Prod-Critical' MG under 'Prod'"
     ``` json
     {
         "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
@@ -213,10 +219,9 @@ Prod-Critical   | 4444444-4444-4444-4444-4444444444444
 
 ## How it will be deployed?
 
-
 We deploy templates using universal, multi-scope PowerShell deployment script. The script's code is available on GitHub repo. 
 
-[Universal Deployment Script GitHub Repo](https://github.com/kwiecek/azure-arm-deployment-script)
+[Universal Deployment Script GitHub Repo](https://github.com/kwiecek/azure-devsecops/)
 
 <!-- Here you can find details about our motivation and concept:
 
@@ -224,7 +229,7 @@ We deploy templates using universal, multi-scope PowerShell deployment script. T
 
 ## Deploy!
 
-??? note "ManagementGroupsHierarchy.DeploymentDefinition.json"
+??? note "Show ManagementGroupsHierarchy.DeploymentDefinition.json"
     ``` json
     [
         {
@@ -255,12 +260,16 @@ We deploy templates using universal, multi-scope PowerShell deployment script. T
     ```
 
 ``` powershell
-.\Deploy-ArmTemplates.ps1 -DeploymentDefinitionsPath .\ManagementGroupsHierarchy.DeploymentDefinition.json
+git clone https://github.com/kwiecek/azure-devsecops.git
+cd azure-devsecops
+.\scripts\Deploy-ArmTemplate.ps1 -DeploymentDefinitionPath .\deployment-definitions\ManagementGroupHierarchy.json
 ```
 
 ## Result
 
 ![Management Group Hierarchy](img/deploy-management-group-hierarchy-004.jpg)
+
+![Management Group Hierarchy](img/deploy-management-group-hierarchy-007.jpg)
 
 
 ## Author

@@ -8,6 +8,8 @@ pages:
 
 theme:
   name: 'material'
+  features:
+    - tabs
   palette:
     primary: 'blue'
     accent: 'blue'
@@ -23,7 +25,7 @@ nav:
     - 'Azure DevOps':
       - Audit Logs Forwarder: 'azure-devops-audit-logs-forwarding.md'
       - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
-      # - Universal ARM Template Deployment Script: 'universal-arm-deployment-script'
+      - Universal ARM Template Deployment Script: 'universal-arm-deployment-script'
 
     - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
     - 'PowerShell':
@@ -55,8 +57,6 @@ nav:
 extra:
   disqus: 'automate-guru'
 
-google_analytics: ['UA-160963982-1', 'auto']
-
 markdown_extensions:
   - admonition
   - codehilite:
@@ -77,3 +77,5 @@ markdown_extensions:
 
 extra_javascript:
   - javascripts/extra.js
+
+google_analytics: ['UA-160963982-1', 'auto']

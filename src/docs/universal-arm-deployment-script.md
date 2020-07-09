@@ -7,9 +7,22 @@ description: How to plan Azure Management Group hierarchy? Organize ubscriptions
 
 ![Universal, multi-scope ARM Template Deployment Script](img/universal-arm-deployment-script-001.jpg)
 
-```
-.\Deploy-ArmTemplates.ps1 -DeploymentDefinitionsPath .\DeploymentDefinitions.json
-```
+!!! question "Do you agree that..."
+    ... we end up having **different deployment experience when testing and deploying to production**? 
+    
+    Our universal deployment script fixes this inconvenience.
+
+
+## What are the requirements?
+
+- Have one **consistent way of deploying** ARM templates in any scenario: from the local computer, or any CI/CD toolkit. The ability to execute a PowerShell script is the only required
+
+- It will **not be required to modify the pipeline** when a new deployment is added. We need only one step that can deploy entire infrastructure, at any scope: Tenant, Management Group, Subscription, and Resource Group.
+
+- **Use new deployment features immediately**. At the moment of writing deployment task in Azure DevOps does not support tenant deployment. 
+
+- It is also not possible to use the new 'What-If' feature. We don't want to wait for them to be available.
+
 
 ## There are already many ways to deploy templates.
 
@@ -39,23 +52,6 @@ Subscription      | blueprints, budgets, eventSubscriptions, peerAsns, policyAss
 
 5. automatic deployment starts, but it deploys infrastructure in a different way that was checked locally 
 
-## Do you agree that...
-
-!!! question "Do you agree that..."
-    ... we end up having **different deployment experience when testing and deploying to production**? 
-    
-    Our universal deployment script fixes this inconvenience.
-
-
-## What are the requirements?
-
-- Have one **consistent way of deploying** ARM templates in any scenario: from the local computer, or any CI/CD toolkit. The ability to execute a PowerShell script is the only required
-
-- It will **not be required to modify the pipeline** when a new deployment is added. We need only one step that can deploy entire infrastructure, at any scope: Tenant, Management Group, Subscription, and Resource Group.
-
-- **Use new deployment features immediately**. At the moment of writing deployment task in Azure DevOps does not support tenant deployment. 
-
-- It is also not possible to use the new 'What-If' feature. We don't want to wait for them to be available.
 
 # How is it done - the universal deployment flow.
 
@@ -83,55 +79,69 @@ Subscription      | blueprints, budgets, eventSubscriptions, peerAsns, policyAss
 
 ## What will be deployed?
 
-## Script
-
-
-<!-- 1.
-
-2.
-
-3.
-
-4. -->
-
-
 ![Universal, multi-scope ARM Template Deployment Script](img/universal-arm-deployment-script-003.jpg)
+
+
+## Where can you find the script and ARMs?
+
+[Check our DevSecOps GitHub Repo](https://github.com/kwiecek/azure-devsecops/)
 
 ## Deployment definition file.
 
 ```
 [
     {
-        "Order": 1,
-        "Template": "ManagementGroup.json",
-        "TemplateParameterFile": "ManagementGroup.Root.Parameters.json",
-        "TenantId": "11111111-1111-1111-1111-111111111111"
+        "Order": 0,
+        "TemplateFile": "arm-templates\\ManagementGroups\\ManagementGroup.json",
+        "TemplateParameterFile": "arm-templates\\ManagementGroups\\ManagementGroup.Root.Parameters.json",
+        "TenantId": "{Replace-With-Tenant-Id}"
     },
     {
-        "Order": 2,
-        "Template": "RoleAssignment.json",
-        "TemplateParameterFile": "RoleAssignment.Soc.Parameters.json",
-        "TenantId": "11111111-1111-1111-1111-111111111111",
-        "ManagementGroupId": "11111111-1111-1111-1111-111111111111"
+        "Order": 10,
+        "TemplateFile": "arm-templates\\PolicySetAssignment\\AllowedLocationsAssignment.json",
+        "TemplateParameterFile": "arm-templates\\PolicySetAssignment\\AllowedLocationsAssignment.Enforce.Parameters.Local.json",
+        "TenantId": "{Replace-With-Tenant-Id}",
+        "ManagementGroupId": "{Replace-With-Tenant-Id}"
     },
     {
-        "Order": 3,
-        "Template": "ResourceGroups.json",
-        "TemplateParameterFile": "ResourceGroups.Parameters.json",
-        "TenantId": "11111111-1111-1111-1111-111111111111",
-        "SubscriptionId": "22222222-2222-2222-2222-222222222222",
-    }, 
+        "Order": 20,
+        "TemplateFile": "arm-templates\\ResourceGroups\\ResourceGroups.json",
+        "TemplateParameterFile": "arm-templates\\ResourceGroups\\ResourceGroups.Parameters.json",
+        "TenantId": "{Replace-With-Tenant-Id}",
+        "SubscriptionId": "{Replace-With-Sub-Id}"
+    },
     {
-        "Order": 4,
-        "Template": "PublicIp.json",
-        "TemplateParameterFile": "PublicIp.Vgw.Parameters.json",
-        "TenantId": "11111111-1111-1111-1111-111111111111",
-        "SubscriptionId": "22222222-2222-2222-2222-222222222222",
-        "RgName": "rg-publicips-westeurope-001",
+        "Order": 30,
+        "TemplateFile": "arm-templates\\PublicIp\\PublicIp.json",
+        "TemplateParameterFile": "arm-templates\\PublicIp\\PublicIp.Parameters.json",
+        "TenantId": "{Replace-With-Tenant-Id}",
+        "SubscriptionId": "{Replace-With-Sub-Id}",
+        "RgName": "rg-pip-westeurope-dev-01",
         "Mode": "Incremental"
     }
-] 
+]
 ```
+## Deployment
+
+``` powershell
+git clone https://github.com/kwiecek/azure-devsecops.git
+cd azure-devsecops
+.\scripts\Deploy-ArmTemplate.ps1 -DeploymentDefinitionPath .\deployment-definitions\AllScopesExample.json
+```
+
+## Output
+
+### Renamed Tenant Root Management Group and assigned Azure Policy
+
+![Universal, multi-scope ARM Template Deployment Script](img/universal-arm-deployment-script-006.jpg)
+
+### Deployed Resource Groups
+
+![Universal, multi-scope ARM Template Deployment Script](img/universal-arm-deployment-script-005.jpg)
+
+### Deployed Public IP
+
+![Universal, multi-scope ARM Template Deployment Script](img/universal-arm-deployment-script-004.jpg)
 
 
 <!-- ## How it is done -->
