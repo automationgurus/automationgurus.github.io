@@ -39,6 +39,7 @@ nav:
       - Deploy As a Code: 'deploy-management-group-hierarchy'
       
     - 'Azure Policy/ Compliance':
+      - Fix MSI Role Assignment: 'fix-msi-role-assignment.md'
       - Security And Compliance As A Code - TDD: 'security-and-compliance-as-a-code-azure-policy-tdd.md'
       - Continous Inspection For Azure Policy: 'azure-policy-continous-integration.md'
       # - Automate Role Assignment For Policy Assignment Identity: 'ensure-policy-assignment-msi-permission-for-mg.md'
