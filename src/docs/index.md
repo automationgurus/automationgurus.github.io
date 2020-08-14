@@ -1,8 +1,8 @@
 # Automation Gurus mission!
 
-## "Don't be like Raj. Perform like Sheldon". 
+## "Don't be like Raj. Perform like Sheldon!" 
 
-[![automate.guru motto](https://img.youtube.com/vi/o_E-2jgNTUs/0.jpg)](https://www.youtube.com/watch?v=o_E-2jgNTUs)
+[![automate.guru motto](https://img.youtube.com/vi/WwDFZ3B1AvA/0.jpg)](https://www.youtube.com/watch?v=WwDFZ3B1AvA)
 
 ## Artur Brodziński
 
