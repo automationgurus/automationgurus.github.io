@@ -27,6 +27,10 @@ nav:
       - Multi-Stage YAML Pipeline Configuration: 'multi-stage-yaml-pipeline-configuration.md'
       - Universal ARM Template Deployment Script: 'universal-arm-deployment-script'
 
+
+    - 'Infrastructure as a Code':
+      - ARM Templates Library : 'arm-templates-shared-library'
+
     - Azure Lighthouse Configuration: 'azure-lighthouse-configuration.md'
     - 'PowerShell':
       - Web-Based Automation With Selenium: 'powershell-web-browser-automation.md'
