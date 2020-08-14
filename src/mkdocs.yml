@@ -82,4 +82,4 @@ markdown_extensions:
 extra_javascript:
   - javascripts/extra.js
 
-# google_analytics: ['UA-160963982-1', 'auto']
+google_analytics: ['UA-160963982-1', 'auto']
