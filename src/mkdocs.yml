@@ -34,6 +34,9 @@ nav:
     - Copy Azure database between stages: 'copy-database-between-stages.md'
     - Automatic Certificate Generation for AKS: 'automatic-certificate-generation-aks.md'
 
+    - 'Azure Governance':
+      - Tags: 'azure-tags-enforcement.md'
+
     - 'Azure Management Group':
       - Hierarchy Best Practises: 'management-group-best-practises.md'
       - Deploy As a Code: 'deploy-management-group-hierarchy'
